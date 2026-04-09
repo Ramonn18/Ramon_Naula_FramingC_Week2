@@ -9,3 +9,11 @@
 **Response:** Created `index.html` with a basic webpage structure (header, two content sections, footer) styled with clean minimal CSS. Also created this `prompt_log.md` file to track all future prompts and responses.
 
 ---
+
+## Entry 2
+**Date:** 2026-04-08
+**Prompt:** end session
+
+**Response:** Logged final entry and closed the session.
+
+---
