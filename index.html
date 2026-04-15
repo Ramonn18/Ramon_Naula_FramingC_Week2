@@ -28,7 +28,8 @@
     <button class="fp-dot" data-slide="5" aria-label="Deaths by Type"></button>
     <button class="fp-dot" data-slide="6" aria-label="Forest Loss"></button>
     <button class="fp-dot" data-slide="7" aria-label="Voices"></button>
-    <button class="fp-dot" data-slide="8" aria-label="Closing"></button>
+    <button class="fp-dot" data-slide="8" aria-label="Routing"></button>
+    <button class="fp-dot" data-slide="9" aria-label="Closing"></button>
   </nav>
 
   <!-- ======================================================
@@ -151,8 +152,40 @@
       </div>
     </section>
 
-    <!-- SLIDE 8 · REFRAME + FOOTER ----------------------- -->
-    <section class="fp-slide slide-reframe" data-slide="8">
+    <!-- SLIDE 8 · VOLUNTEER ROUTING ---------------------- -->
+    <section class="fp-slide slide-solution" data-slide="8" id="section-routing">
+      <div class="solution-inner">
+        <div class="section-header stagger-1">
+          <p class="solution-eyebrow">Proposed Solution</p>
+          <h2>Volunteer Priority Routing</h2>
+          <p class="chart-desc">Residents ranked by vulnerability type, floor level &amp; distance. Press Calculate Route to animate the optimal path.</p>
+        </div>
+        <div class="solution-body stagger-2">
+          <div class="map-panel">
+            <svg id="routing-map"></svg>
+          </div>
+          <div class="priority-panel">
+            <div class="priority-header">
+              <span class="priority-title">Visit Queue</span>
+              <button id="btn-route" class="btn-route">Calculate Route</button>
+              <button id="btn-reset" class="btn-reset">Reset</button>
+            </div>
+            <div id="priority-list" class="priority-list">
+              <p class="priority-empty">Press "Calculate Route" to see the optimized visit order.</p>
+            </div>
+            <div class="priority-legend">
+              <div class="pl-item"><span class="pl-dot" style="background:#e8aa30"></span>Elderly</div>
+              <div class="pl-item"><span class="pl-dot" style="background:#77b6ff"></span>Disabled</div>
+              <div class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>Both needs</div>
+              <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9 · REFRAME + FOOTER ----------------------- -->
+    <section class="fp-slide slide-reframe" data-slide="9">
       <div class="reframe-inner">
         <p class="reframe-label stagger-1">Problem Re-Frame</p>
         <h2 class="stagger-2">The problem isn't a lack of knowledge.<br>It's a lack of perceived ability to act.</h2>
