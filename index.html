@@ -12,38 +12,48 @@
 </head>
 <body>
 
-  <!-- Global tooltip (positioned by JS) -->
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Global tooltip -->
   <div id="tooltip" aria-hidden="true"></div>
 
   <!-- ======================================================
-       PAGE HEADER
+       HERO — full viewport
        ====================================================== -->
-  <header>
+  <section class="hero" id="hero">
     <div class="meander-bar"></div>
-    <div class="header-inner">
+    <div class="hero-inner">
       <p class="eyebrow">Rewiring Athenian's Urban Response</p>
-      <h1 class="page-title">From Resident Survival to Athenian Resilience</h1>
+      <h1 class="page-title">From Resident Survival<br>to Athenian Resilience</h1>
       <p class="page-subtitle">Natural Disasters &amp; Community Resilience in Athens, 2020–2026</p>
     </div>
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll to explore</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <div class="meander-bar"></div>
-  </header>
+  </section>
 
   <!-- ======================================================
-       MAIN CONTENT
+       MAIN NARRATIVE FLOW
        ====================================================== -->
   <main>
 
-    <!-- CONTEXT / INTRO ------------------------------------ -->
+    <!-- CONTEXT -------------------------------------------- -->
     <section class="context-section">
       <div class="context-grid">
 
-        <div class="context-text">
+        <div class="context-text reveal">
           <h2>The Risk Perception–Action Gap</h2>
-          <p>Athens residents are acutely aware of disaster threats. Yet this awareness rarely translates into personal preparedness. The barrier is not knowledge, it is the perceived absence of individual efficacy and institutional support.</p>
+          <p>Athens residents are acutely aware of disaster threats. Yet this awareness rarely translates into personal preparedness. The barrier is not knowledge — it is the perceived absence of individual efficacy and institutional support.</p>
           <p>As disasters intensify and government coordination falters, community trust erodes. The result: a city suspended between awareness and action, where "cynical lethargy" fills the void left by failing infrastructure.</p>
         </div>
 
-        <blockquote class="paradox-quote">
+        <blockquote class="paradox-quote reveal" style="transition-delay:0.15s">
           <p>I have the knowledge of how to act during a disaster but I lack the individual efficacy and government support to take proper action.</p>
           <cite>— The Athenian Paradox</cite>
         </blockquote>
@@ -51,50 +61,100 @@
       </div>
     </section>
 
-    <!-- TIMELINE CHART ------------------------------------- -->
-    <section class="chart-section">
-      <div class="section-header">
-        <h2>A Decade of Escalating Crises</h2>
-        <p class="chart-desc">Each marker is a disaster event. Circle size reflects death toll. Events at the baseline had no direct recorded fatalities.</p>
+    <!-- STAT CALLOUT 1 ------------------------------------- -->
+    <section class="stat-callout">
+      <div class="stat-inner reveal">
+        <div class="stat-number">45</div>
+        <div class="stat-label">deaths in a single month</div>
+        <div class="stat-context">August–September 2023. The Evros Wildfire and Storm Daniel struck within weeks of each other — turning a season into a national crisis.</div>
       </div>
-      <div class="legend" id="timeline-legend"></div>
-      <div class="chart-wrapper">
+    </section>
+
+    <!-- TIMELINE CHART ------------------------------------- -->
+    <section class="chart-section" id="section-timeline">
+      <div class="section-header reveal">
+        <h2>A Decade of Escalating Crises</h2>
+        <p class="chart-desc">Each marker is a disaster event. Circle size reflects death toll. Filter by type to isolate patterns. Hover any event for its full story.</p>
+      </div>
+
+      <div class="filter-tabs reveal" style="transition-delay:0.1s"
+           role="group" aria-label="Filter by disaster type">
+        <button class="tab active" data-filter="all">All Events</button>
+        <button class="tab" data-filter="Wildfire">Wildfire</button>
+        <button class="tab" data-filter="Storm">Storm</button>
+        <button class="tab" data-filter="Flood">Flood</button>
+        <button class="tab" data-filter="Earthquake">Earthquake</button>
+        <button class="tab" data-filter="Heatwave">Heatwave</button>
+      </div>
+
+      <div class="legend reveal" id="timeline-legend" style="transition-delay:0.2s"></div>
+
+      <div class="chart-wrapper reveal" style="transition-delay:0.25s">
         <svg id="timeline-chart"></svg>
+      </div>
+    </section>
+
+    <!-- STAT CALLOUT 2 ------------------------------------- -->
+    <section class="stat-callout">
+      <div class="stat-inner reveal">
+        <div class="stat-number">28</div>
+        <div class="stat-label">deaths — the largest wildfire in EU history</div>
+        <div class="stat-context">The Evros fire of August 2023 was the largest single wildfire ever recorded in the European Union. Volunteers were first on scene. The fire service was nowhere.</div>
       </div>
     </section>
 
     <!-- BAR CHART ------------------------------------------ -->
     <section class="chart-section">
-      <div class="section-header">
+      <div class="section-header reveal">
         <h2>Deaths by Disaster Type, 2020–2026</h2>
-        <p class="chart-desc">Total recorded fatalities per disaster category across the full period. Hover a bar for details.</p>
+        <p class="chart-desc">Total recorded fatalities per category. Hover a bar for details.</p>
       </div>
-      <div class="chart-wrapper">
+      <div class="chart-wrapper reveal" style="transition-delay:0.1s">
         <svg id="bar-chart"></svg>
       </div>
-      <p class="chart-footnote">* Heat-related mortality requires epidemiological attribution studies and is not captured in immediate emergency records. The 2024 heatwave and 2025 fire season caused severe societal harm beyond direct death counts.</p>
+      <p class="chart-footnote reveal" style="transition-delay:0.2s">
+        * Heat-related mortality requires epidemiological attribution studies beyond emergency records. The 2024 heatwave and 2025 fire season caused severe, compounding harm not captured in direct death counts.
+      </p>
     </section>
 
-    <!-- VOICES FROM THE GROUND ----------------------------- -->
+    <!-- STAT CALLOUT 3 ------------------------------------- -->
+    <section class="stat-callout">
+      <div class="stat-inner reveal">
+        <div class="stat-number">70%</div>
+        <div class="stat-label">of Attica's forests gone in 25 years</div>
+        <div class="stat-context">The 2025 fire season capped a quarter-century of forest loss. Degraded soil now amplifies every storm — making Athens structurally more vulnerable with each passing year.</div>
+      </div>
+    </section>
+
+    <!-- VOICES -------------------------------------------- -->
     <section class="voices-section">
-      <h2>Voices from the Ground</h2>
+      <h2 class="reveal">Voices from the Ground</h2>
       <div class="quotes-grid">
 
-        <div class="quote-card">
-          <p>"We cannot change nature or geography. The point is that we all wake up, from the prime minister to the last citizen, and understand that if we do not come out of our inertia and cynical lethargy, we will end up a 'failed state'."</p>
+        <div class="quote-card reveal">
+          <p>"We cannot change nature or geography. The point is that we all wake up — from the prime minister to the last citizen — and understand that if we do not come out of our inertia and cynical lethargy, we will end up a 'failed state'."</p>
           <cite>— Athens resident during disaster response</cite>
         </div>
 
-        <div class="quote-card">
+        <div class="quote-card reveal" style="transition-delay:0.12s">
           <p>"If my father had not stayed, our house would have burned down."</p>
           <cite>— Athens resident, 2021 wildfires</cite>
         </div>
 
-        <div class="quote-card accent">
+        <div class="quote-card accent reveal" style="transition-delay:0.24s">
           <p>"The fire service was nowhere. Fortunately there were volunteers. I feel anger, nothing else."</p>
           <cite>— Athens resident, on the role of informal volunteer groups</cite>
         </div>
 
+      </div>
+    </section>
+
+    <!-- CLOSING REFRAME ------------------------------------ -->
+    <section class="reframe-section">
+      <div class="reframe-inner reveal">
+        <p class="reframe-label">Problem Re-Frame</p>
+        <h2>The problem isn't a lack of knowledge.<br>It's a lack of perceived ability to act.</h2>
+        <p>Volunteer groups have the will and the skill — but lack the license, the resources, and the recognition. The city's resilience lives in its people, not its institutions.</p>
       </div>
     </section>
 
@@ -112,6 +172,5 @@
   </footer>
 
   <script src="main.js"></script>
-
 </body>
 </html>
