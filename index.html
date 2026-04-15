@@ -1,99 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ramon Naula — Framing UX C Week 2</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-color: #f5f5f5;
-      color: #222;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #222;
-      color: #fff;
-      padding: 2rem;
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-    }
-
-    header p {
-      font-size: 0.9rem;
-      color: #aaa;
-      margin-top: 0.3rem;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 3rem auto;
-      padding: 0 2rem;
-    }
-
-    section {
-      background: #fff;
-      border-radius: 6px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-
-    section h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #555;
-    }
-
-    section p {
-      font-size: 1rem;
-      color: #444;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: #aaa;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Fracture Line — Athens Crisis &amp; Resilience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 
+  <!-- Global tooltip (positioned by JS) -->
+  <div id="tooltip" aria-hidden="true"></div>
+
+  <!-- ======================================================
+       PAGE HEADER
+       ====================================================== -->
   <header>
-    <h1>Ramon Naula</h1>
-    <p>Framing UX C &mdash; Week 2</p>
+    <div class="meander-bar"></div>
+    <div class="header-inner">
+      <p class="eyebrow">Sociological Resilience: Erosion of Social Capital</p>
+      <h1 class="page-title">The Fracture Line</h1>
+      <p class="page-subtitle">Natural Disasters &amp; Community Resilience in Athens, 2020–2026</p>
+    </div>
+    <div class="meander-bar"></div>
   </header>
 
+  <!-- ======================================================
+       MAIN CONTENT
+       ====================================================== -->
   <main>
-    <section>
-      <h2>About This Project</h2>
-      <p>This is my Week 2 exercise for Framing UX C at SVA. Add your content here.</p>
+
+    <!-- CONTEXT / INTRO ------------------------------------ -->
+    <section class="context-section">
+      <div class="context-grid">
+
+        <div class="context-text">
+          <h2>The Risk Perception–Action Gap</h2>
+          <p>Athens residents are acutely aware of disaster threats. Yet this awareness rarely translates into personal preparedness. The barrier is not knowledge — it is the perceived absence of individual efficacy and institutional support.</p>
+          <p>As disasters intensify and government coordination falters, community trust erodes. The result: a city suspended between awareness and action, where "cynical lethargy" fills the void left by failing infrastructure.</p>
+        </div>
+
+        <blockquote class="paradox-quote">
+          <p>I have the knowledge of how to act during a disaster but I lack the individual efficacy and government support to take proper action.</p>
+          <cite>— The Athenian Paradox</cite>
+        </blockquote>
+
+      </div>
     </section>
 
-    <section>
-      <h2>Work</h2>
-      <p>Project content goes here.</p>
+    <!-- TIMELINE CHART ------------------------------------- -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>A Decade of Escalating Crises</h2>
+        <p class="chart-desc">Each marker is a disaster event. Circle size reflects death toll. Hover any event to reveal its full story. Events at the baseline had no direct recorded fatalities.</p>
+      </div>
+      <div class="legend" id="timeline-legend"></div>
+      <div class="chart-wrapper">
+        <svg id="timeline-chart"></svg>
+      </div>
     </section>
+
+    <!-- BAR CHART ------------------------------------------ -->
+    <section class="chart-section">
+      <div class="section-header">
+        <h2>Deaths by Disaster Type, 2020–2026</h2>
+        <p class="chart-desc">Total recorded fatalities per disaster category across the full period. Hover a bar for details.</p>
+      </div>
+      <div class="chart-wrapper">
+        <svg id="bar-chart"></svg>
+      </div>
+      <p class="chart-footnote">* Heat-related mortality requires epidemiological attribution studies and is not captured in immediate emergency records. The 2024 heatwave and 2025 fire season caused severe societal harm beyond direct death counts.</p>
+    </section>
+
+    <!-- VOICES FROM THE GROUND ----------------------------- -->
+    <section class="voices-section">
+      <h2>Voices from the Ground</h2>
+      <div class="quotes-grid">
+
+        <div class="quote-card">
+          <p>"We cannot change nature or geography. The point is that we all wake up, from the prime minister to the last citizen, and understand that if we do not come out of our inertia and cynical lethargy, we will end up a 'failed state'."</p>
+          <cite>— Athens resident during disaster response</cite>
+        </div>
+
+        <div class="quote-card">
+          <p>"If my father had not stayed, our house would have burned down."</p>
+          <cite>— Athens resident, 2021 wildfires</cite>
+        </div>
+
+        <div class="quote-card accent">
+          <p>"The fire service was nowhere. Fortunately there were volunteers. I feel anger, nothing else."</p>
+          <cite>— Athens resident, on the role of informal volunteer groups</cite>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
   <footer>
-    &copy; 2026 Ramon Naula &mdash; SVA
+    <div class="meander-bar"></div>
+    <div class="footer-inner">
+      <p>Ramon Naula &mdash; Framing UX C, Week 2 &mdash; SVA 2025–2026</p>
+      <p class="footer-sub">From Resident Survival to Team Resilience: Rewiring the Athenian Urban Response</p>
+    </div>
   </footer>
+
+  <script src="main.js"></script>
 
 </body>
 </html>

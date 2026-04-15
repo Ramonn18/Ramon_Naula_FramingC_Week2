@@ -1,0 +1,403 @@
+/* ============================================================
+   VARIABLES — Greek Vase Palette
+   ============================================================ */
+:root {
+  --cream:       #F5EDD6;
+  --dark:        #1A1209;
+  --terracotta:  #C4622D;
+  --clay:        #8B3A1A;
+  --gold:        #C9941A;
+  --muted:       #8B7355;
+  --surface:     #FDF6E8;
+
+  /* Disaster type palette */
+  --col-wildfire:   #C4622D;
+  --col-storm:      #2E6B9E;
+  --col-flood:      #3A8A9E;
+  --col-earthquake: #7D5A1E;
+  --col-heatwave:   #D4961A;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* ============================================================
+   MEANDER / GREEK KEY BORDER
+   Repeating SVG path tiled horizontally
+   ============================================================ */
+.meander-bar {
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Cpath d='M0,12 L2,12 L2,2 L12,2 L12,8 L6,8 L6,12 L24,12' fill='none' stroke='%23F5EDD6' stroke-width='1.5' stroke-linejoin='miter'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 24px 14px;
+  opacity: 0.55;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+body > header {
+  background: var(--dark);
+  color: var(--cream);
+}
+
+.header-inner {
+  text-align: center;
+  padding: 3rem 2rem 2.5rem;
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.page-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: rgba(245, 237, 214, 0.65);
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+main {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ============================================================
+   CONTEXT / INTRO SECTION
+   ============================================================ */
+.context-section {
+  padding: 4rem 0 2.5rem;
+}
+
+.context-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .context-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.context-text h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: var(--clay);
+  margin-bottom: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.context-text p {
+  color: #4A3728;
+  margin-bottom: 0.75rem;
+  font-size: 0.93rem;
+  line-height: 1.8;
+}
+
+.paradox-quote {
+  background: var(--dark);
+  color: var(--cream);
+  padding: 2rem 1.75rem 1.75rem;
+  border-left: 4px solid var(--terracotta);
+  position: relative;
+}
+
+.paradox-quote::before {
+  content: '\201C';
+  font-family: 'Cinzel', serif;
+  font-size: 5rem;
+  color: var(--terracotta);
+  line-height: 1;
+  position: absolute;
+  top: 0.25rem;
+  left: 1rem;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.paradox-quote p {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  padding-top: 1.25rem;
+  font-style: italic;
+  color: var(--cream);
+}
+
+.paradox-quote cite {
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   CHART SECTIONS
+   ============================================================ */
+.chart-section {
+  padding: 3rem 0;
+  border-top: 1px solid rgba(26, 18, 9, 0.1);
+}
+
+.section-header {
+  margin-bottom: 1.25rem;
+}
+
+.section-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: var(--clay);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+}
+
+.chart-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.chart-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart-wrapper svg {
+  display: block;
+  overflow: visible;
+}
+
+.chart-footnote {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 1rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   LEGEND
+   ============================================================ */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--dark);
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+#tooltip {
+  position: fixed;
+  background: var(--dark);
+  color: var(--cream);
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  max-width: 270px;
+  border-left: 3px solid var(--terracotta);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+
+#tooltip.visible { opacity: 1; }
+
+.tt-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 0.15rem;
+}
+
+.tt-meta {
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.tt-desc {
+  color: rgba(245, 237, 214, 0.78);
+  font-size: 0.78rem;
+  margin-bottom: 0.5rem;
+}
+
+.tt-deaths {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--terracotta);
+}
+
+.tt-deaths.no-count {
+  color: var(--gold);
+}
+
+/* ============================================================
+   VOICES / QUOTES SECTION
+   ============================================================ */
+.voices-section {
+  padding: 3rem 0 4rem;
+  border-top: 1px solid rgba(26, 18, 9, 0.1);
+}
+
+.voices-section > h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: var(--clay);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.quote-card {
+  background: var(--surface);
+  border-top: 3px solid var(--muted);
+  padding: 1.5rem;
+  box-shadow: 0 1px 6px rgba(26,18,9,0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quote-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(26,18,9,0.12);
+}
+
+.quote-card.accent {
+  border-top-color: var(--terracotta);
+}
+
+.quote-card p {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #4A3728;
+  line-height: 1.75;
+  margin-bottom: 0.9rem;
+}
+
+.quote-card cite {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-style: normal;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+body > footer {
+  background: var(--dark);
+  color: var(--cream);
+  text-align: center;
+}
+
+.footer-inner {
+  padding: 2rem 2rem 2.5rem;
+}
+
+.footer-inner p {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  margin-bottom: 0.35rem;
+}
+
+.footer-sub {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  color: rgba(245, 237, 214, 0.4) !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ============================================================
+   D3 AXIS & GRID
+   ============================================================ */
+.axis text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.axis path,
+.axis line {
+  stroke: rgba(26, 18, 9, 0.15);
+}
+
+.axis .domain { display: none; }
+
+.grid line {
+  stroke: rgba(26, 18, 9, 0.06);
+  stroke-dasharray: 3 3;
+}
+
+.grid .domain { display: none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 520px) {
+  .header-inner { padding: 2rem 1rem 1.75rem; }
+  main { padding: 0 1rem; }
+  .voices-section { padding-bottom: 2.5rem; }
+}
