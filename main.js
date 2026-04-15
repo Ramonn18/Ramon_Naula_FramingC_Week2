@@ -72,11 +72,11 @@ const DISASTERS = [
    COLOR MAP
    ============================================================ */
 const TYPE_COLOR = {
-  'Wildfire':   '#C4622D',
-  'Storm':      '#2E6B9E',
-  'Flood':      '#3A8A9E',
-  'Earthquake': '#7D5A1E',
-  'Heatwave':   '#D4961A',
+  'Wildfire':   '#2a60df',   // color 1 — dominant, most deaths
+  'Storm':      '#1a3fa0',   // darker blue — second most impactful
+  'Flood':      '#4b7ee8',   // mid-blue
+  'Earthquake': '#77b6ff',   // color 2
+  'Heatwave':   '#cae6ff',   // color 3 — light (deaths unquantified)
 };
 
 /* ============================================================
@@ -206,7 +206,7 @@ function drawTimeline() {
       .attr('x2', xScale(new Date(yr, 0, 1)))
       .attr('y1', 0)
       .attr('y2', H)
-      .attr('stroke', 'rgba(26,18,9,0.06)')
+      .attr('stroke', 'rgba(42,96,223,0.08)')
       .attr('stroke-width', 1);
   });
 
@@ -220,7 +220,7 @@ function drawTimeline() {
   g.append('path')
     .datum(sorted)
     .attr('fill',            'none')
-    .attr('stroke',          'rgba(26,18,9,0.12)')
+    .attr('stroke',          'rgba(42,96,223,0.15)')
     .attr('stroke-width',    1.5)
     .attr('stroke-dasharray','4 4')
     .attr('d',               line);
@@ -245,7 +245,7 @@ function drawTimeline() {
     .attr('x',           -(H / 2))
     .attr('y',           -42)
     .attr('text-anchor', 'middle')
-    .attr('fill',        '#8B7355')
+    .attr('fill',        '#6b8fc7')
     .attr('font-size',   '11px')
     .attr('font-family', 'Inter, sans-serif')
     .text('Deaths recorded');
@@ -261,7 +261,7 @@ function drawTimeline() {
       .attr('y',           ay + 4)
       .attr('font-size',   '9.5px')
       .attr('font-family', 'Cinzel, serif')
-      .attr('fill',        '#C4622D')
+      .attr('fill',        '#2a60df')
       .attr('font-weight', '700')
       .text('2023 peak — 45 deaths total');
   }
@@ -279,9 +279,9 @@ function drawTimeline() {
     .attr('class',        'evt-circle')
     .attr('r',            0)             // animate from 0
     .attr('fill',         d => TYPE_COLOR[d.type])
-    .attr('fill-opacity', d => d.deaths === 0 ? 0.18 : 0.82)
+    .attr('fill-opacity', d => d.deaths === 0 ? 0.35 : 0.85)
     .attr('stroke',       d => TYPE_COLOR[d.type])
-    .attr('stroke-width', d => d.deaths === 0 ? 1.5 : 0)
+    .attr('stroke-width', 1.5)
     .attr('stroke-dasharray', d => d.deaths === 0 ? '3 2' : 'none')
     // entrance animation
     .transition()
@@ -302,7 +302,7 @@ function drawTimeline() {
     .attr('text-anchor',  'middle')
     .attr('font-size',    '9px')
     .attr('font-family',  'Inter, sans-serif')
-    .attr('fill',         '#4A3728')
+    .attr('fill',         '#2a3a5c')
     .attr('font-weight',  '500')
     .attr('opacity',      0)
     .text(d => d.event.length > 15 ? d.event.slice(0, 14) + '…' : d.event)
@@ -326,7 +326,7 @@ function drawTimeline() {
       d3.select(this).select('.evt-circle')
         .transition().duration(140)
         .attr('r',            r(d))
-        .attr('fill-opacity', d.deaths === 0 ? 0.18 : 0.82);
+        .attr('fill-opacity', d.deaths === 0 ? 0.35 : 0.85);
       hideTooltip();
     });
 }
@@ -394,7 +394,7 @@ function drawBarChart() {
     .attr('x',      0)
     .attr('width',  W)
     .attr('height', yScale.bandwidth())
-    .attr('fill',   'rgba(26,18,9,0.03)');
+    .attr('fill',   'rgba(42,96,223,0.04)');
 
   // Filled bar (animates in)
   bars.append('rect')
@@ -443,7 +443,7 @@ function drawBarChart() {
     .attr('y',           yScale.bandwidth() / 2 + 4)
     .attr('font-size',   '11.5px')
     .attr('font-family', 'Inter, sans-serif')
-    .attr('fill',        '#4A3728')
+    .attr('fill',        '#2a3a5c')
     .attr('font-weight', '500')
     .text(d => d.deaths > 0 ? `${d.deaths} deaths` : 'see note *')
     .transition()

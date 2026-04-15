@@ -1,21 +1,21 @@
 /* ============================================================
-   VARIABLES — Greek Vase Palette
+   VARIABLES — Blue Monochromatic Palette
    ============================================================ */
 :root {
-  --cream:       #F5EDD6;
-  --dark:        #1A1209;
-  --terracotta:  #C4622D;
-  --clay:        #8B3A1A;
-  --gold:        #C9941A;
-  --muted:       #8B7355;
-  --surface:     #FDF6E8;
+  --cream:       #ffffff;
+  --dark:        #0f1d3d;
+  --terracotta:  #2a60df;
+  --clay:        #1a3fa0;
+  --gold:        #77b6ff;
+  --muted:       #6b8fc7;
+  --surface:     #f4f8ff;
 
-  /* Disaster type palette */
-  --col-wildfire:   #C4622D;
-  --col-storm:      #2E6B9E;
-  --col-flood:      #3A8A9E;
-  --col-earthquake: #7D5A1E;
-  --col-heatwave:   #D4961A;
+  /* Disaster type palette — derived from the 3-color set */
+  --col-wildfire:   #2a60df;
+  --col-storm:      #1a3fa0;
+  --col-flood:      #77b6ff;
+  --col-earthquake: #4b7ee8;
+  --col-heatwave:   #cae6ff;
 }
 
 /* ============================================================
@@ -37,10 +37,10 @@ body {
    ============================================================ */
 .meander-bar {
   height: 14px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Cpath d='M0,12 L2,12 L2,2 L12,2 L12,8 L6,8 L6,12 L24,12' fill='none' stroke='%23F5EDD6' stroke-width='1.5' stroke-linejoin='miter'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14'%3E%3Cpath d='M0,12 L2,12 L2,2 L12,2 L12,8 L6,8 L6,12 L24,12' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linejoin='miter'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-size: 24px 14px;
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 /* ============================================================
@@ -118,15 +118,15 @@ main {
 }
 
 .context-text p {
-  color: #4A3728;
+  color: #2a3a5c;
   margin-bottom: 0.75rem;
   font-size: 0.93rem;
   line-height: 1.8;
 }
 
 .paradox-quote {
-  background: var(--dark);
-  color: var(--cream);
+  background: var(--surface);
+  color: var(--dark);
   padding: 2rem 1.75rem 1.75rem;
   border-left: 4px solid var(--terracotta);
   position: relative;
@@ -141,7 +141,7 @@ main {
   position: absolute;
   top: 0.25rem;
   left: 1rem;
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
 }
 
@@ -152,12 +152,12 @@ main {
   margin-bottom: 1rem;
   padding-top: 1.25rem;
   font-style: italic;
-  color: var(--cream);
+  color: var(--dark);
 }
 
 .paradox-quote cite {
   font-size: 0.72rem;
-  color: var(--gold);
+  color: var(--terracotta);
   letter-spacing: 0.06em;
   font-style: normal;
   text-transform: uppercase;
@@ -168,7 +168,7 @@ main {
    ============================================================ */
 .chart-section {
   padding: 3rem 0;
-  border-top: 1px solid rgba(26, 18, 9, 0.1);
+  border-top: 1px solid rgba(42, 96, 223, 0.15);
 }
 
 .section-header {
@@ -240,7 +240,7 @@ main {
 #tooltip {
   position: fixed;
   background: var(--dark);
-  color: var(--cream);
+  color: #ffffff;
   padding: 0.8rem 1rem;
   font-size: 0.8rem;
   line-height: 1.55;
@@ -250,7 +250,7 @@ main {
   opacity: 0;
   transition: opacity 0.12s ease;
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  box-shadow: 0 4px 20px rgba(15, 29, 61, 0.25);
 }
 
 #tooltip.visible { opacity: 1; }
@@ -259,7 +259,7 @@ main {
   font-family: 'Cinzel', serif;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--cream);
+  color: #ffffff;
   margin-bottom: 0.15rem;
 }
 
@@ -272,7 +272,7 @@ main {
 }
 
 .tt-desc {
-  color: rgba(245, 237, 214, 0.78);
+  color: rgba(202, 230, 255, 0.85);
   font-size: 0.78rem;
   margin-bottom: 0.5rem;
 }
@@ -280,11 +280,11 @@ main {
 .tt-deaths {
   font-weight: 600;
   font-size: 0.8rem;
-  color: var(--terracotta);
+  color: #77b6ff;
 }
 
 .tt-deaths.no-count {
-  color: var(--gold);
+  color: #cae6ff;
 }
 
 /* ============================================================
@@ -292,7 +292,7 @@ main {
    ============================================================ */
 .voices-section {
   padding: 3rem 0 4rem;
-  border-top: 1px solid rgba(26, 18, 9, 0.1);
+  border-top: 1px solid rgba(42, 96, 223, 0.15);
 }
 
 .voices-section > h2 {
@@ -312,15 +312,15 @@ main {
 
 .quote-card {
   background: var(--surface);
-  border-top: 3px solid var(--muted);
+  border-top: 3px solid var(--gold);
   padding: 1.5rem;
-  box-shadow: 0 1px 6px rgba(26,18,9,0.07);
+  box-shadow: 0 1px 6px rgba(42, 96, 223, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .quote-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(26,18,9,0.12);
+  box-shadow: 0 4px 16px rgba(42, 96, 223, 0.15);
 }
 
 .quote-card.accent {
@@ -330,7 +330,7 @@ main {
 .quote-card p {
   font-size: 0.88rem;
   font-style: italic;
-  color: #4A3728;
+  color: #2a3a5c;
   line-height: 1.75;
   margin-bottom: 0.9rem;
 }
