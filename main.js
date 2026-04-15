@@ -321,8 +321,10 @@ function drawBarChart() {
   const totalW   = Math.max(wrapper.clientWidth, 440);
   const margin   = { top: 10, right: 80, bottom: 30, left: 112 };
   const W        = totalW - margin.left - margin.right;
-  const bandH    = Math.min(30, (wrapper.clientHeight - 60) / barData.length - 8);
-  const bandGap  = 8;
+  // Scale bar height to fill available wrapper space; clamp between 32–64px
+  const availH   = wrapper.clientHeight > 40 ? wrapper.clientHeight : window.innerHeight * 0.55;
+  const bandH    = Math.min(64, Math.max(32, Math.floor((availH - margin.top - margin.bottom - 30) / barData.length) - 12));
+  const bandGap  = Math.round(bandH * 0.22);
   const totalH   = barData.length * (bandH + bandGap) + margin.top + margin.bottom;
 
   const svg = d3.select('#bar-chart').attr('width', totalW).attr('height', totalH);
@@ -353,12 +355,12 @@ function drawBarChart() {
     .on('mouseout',  function() { d3.select(this).attr('fill-opacity',1); hideTooltip(); })
     .transition().duration(850).delay((_,i) => i*120).attr('width', d => xScale(d.deaths));
 
-  bars.append('text').attr('x',-8).attr('y', yScale.bandwidth()/2+4)
-    .attr('text-anchor','end').attr('font-size','11px').attr('font-family','Cinzel, serif')
+  bars.append('text').attr('x',-8).attr('y', yScale.bandwidth()/2+5)
+    .attr('text-anchor','end').attr('font-size','13px').attr('font-family','Cinzel, serif')
     .attr('fill', d => TYPE_COLOR[d.type]).attr('font-weight','600').text(d => d.type);
 
-  bars.append('text').attr('class','bar-label').attr('x',6).attr('y', yScale.bandwidth()/2+4)
-    .attr('font-size','11px').attr('font-family','Inter, sans-serif')
+  bars.append('text').attr('class','bar-label').attr('x',6).attr('y', yScale.bandwidth()/2+5)
+    .attr('font-size','12px').attr('font-family','Inter, sans-serif')
     .attr('fill','#2a3a5c').attr('font-weight','500')
     .text(d => d.deaths > 0 ? `${d.deaths} deaths` : 'see note *')
     .transition().duration(850).delay((_,i) => i*120).attr('x', d => xScale(d.deaths)+7);
