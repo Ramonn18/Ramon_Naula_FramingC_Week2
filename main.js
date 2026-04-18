@@ -124,14 +124,18 @@ function animateCounter(el, target, suffix, duration) {
 const tooltip = document.getElementById('tooltip');
 
 function showTooltip(event, d) {
-  const deathHtml = d.deaths > 0
-    ? `<div class="tt-deaths">${d.deaths} death${d.deaths > 1 ? 's' : ''} recorded</div>`
-    : `<div class="tt-deaths no-count">No direct fatality count in emergency records</div>`;
+  const deathHtml = d.deaths == null
+    ? ''
+    : d.deaths > 0
+      ? `<div class="tt-deaths">${d.deaths} death${d.deaths > 1 ? 's' : ''} recorded</div>`
+      : `<div class="tt-deaths no-count">No direct fatality count in emergency records</div>`;
+
+  const descHtml = d.desc ? `<div class="tt-desc">${d.desc}</div>` : '';
 
   tooltip.innerHTML = `
     <div class="tt-title">${d.event}</div>
     <div class="tt-meta">${d.year} &mdash; ${d.region}</div>
-    <div class="tt-desc">${d.desc}</div>
+    ${descHtml}
     ${deathHtml}
   `;
   tooltip.classList.add('visible');
@@ -501,8 +505,7 @@ function drawNeighborhoodMap() {
         event: res.name,
         year:  res.type.charAt(0).toUpperCase() + res.type.slice(1),
         region:`Floor ${res.floor} · ${res.note}`,
-        desc:  '',
-        deaths: 0,
+        deaths: null,
       }))
       .on('mousemove', positionTooltip)
       .on('mouseout',  hideTooltip);
