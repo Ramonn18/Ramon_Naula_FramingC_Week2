@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Volunteer Routing — Athens Resilience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="solution.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="solution-mode">
+
+  <!-- Global tooltip -->
+  <div id="tooltip" aria-hidden="true"></div>
+
+  <!-- Header bar -->
+  <header class="sol-header">
+    <a href="index.html" class="sol-back">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Presentation
+    </a>
+    <span class="sol-title">Volunteer Priority Routing</span>
+    <span class="sol-badge">Solution Mode</span>
+  </header>
+
+  <!-- Main tool area -->
+  <main class="sol-main">
+    <div class="sol-intro">
+      <p class="solution-eyebrow">Proposed Solution</p>
+      <h1>Athens Neighbourhood Response Map</h1>
+      <p class="chart-desc">Residents ranked by vulnerability type, floor level &amp; distance. Press Calculate Route to animate the optimal path.</p>
+    </div>
+
+    <div class="solution-body">
+      <div class="map-panel">
+        <svg id="routing-map"></svg>
+      </div>
+      <div class="priority-panel">
+        <div class="priority-header">
+          <span class="priority-title">Visit Queue</span>
+          <button id="btn-route" class="btn-route">Calculate Route</button>
+          <button id="btn-reset" class="btn-reset">Reset</button>
+        </div>
+        <div id="priority-list" class="priority-list">
+          <p class="priority-empty">Press "Calculate Route" to see the optimized visit order.</p>
+        </div>
+        <div class="priority-legend">
+          <div class="pl-item"><span class="pl-dot" style="background:#e8aa30"></span>Elderly</div>
+          <div class="pl-item"><span class="pl-dot" style="background:#77b6ff"></span>Disabled</div>
+          <div class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>Both needs</div>
+          <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="solution.js"></script>
+</body>
+</html>

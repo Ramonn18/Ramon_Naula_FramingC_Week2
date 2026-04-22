@@ -28,7 +28,7 @@
     <button class="fp-dot" data-slide="5" aria-label="Deaths by Type"></button>
     <button class="fp-dot" data-slide="6" aria-label="Forest Loss"></button>
     <button class="fp-dot" data-slide="7" aria-label="Voices"></button>
-    <button class="fp-dot" data-slide="8" aria-label="Routing"></button>
+    <button class="fp-dot" data-slide="8" aria-label="Solution"></button>
     <button class="fp-dot" data-slide="9" aria-label="Closing"></button>
   </nav>
 
@@ -152,36 +152,22 @@
       </div>
     </section>
 
-    <!-- SLIDE 8 · VOLUNTEER ROUTING ---------------------- -->
-    <section class="fp-slide slide-solution" data-slide="8" id="section-routing">
-      <div class="solution-inner">
-        <div class="section-header stagger-1">
-          <p class="solution-eyebrow">Proposed Solution</p>
-          <h2>Volunteer Priority Routing</h2>
-          <p class="chart-desc">Residents ranked by vulnerability type, floor level &amp; distance. Press Calculate Route to animate the optimal path.</p>
-        </div>
-        <div class="solution-body stagger-2">
-          <div class="map-panel">
-            <svg id="routing-map"></svg>
-          </div>
-          <div class="priority-panel">
-            <div class="priority-header">
-              <span class="priority-title">Visit Queue</span>
-              <button id="btn-route" class="btn-route">Calculate Route</button>
-              <button id="btn-reset" class="btn-reset">Reset</button>
-            </div>
-            <div id="priority-list" class="priority-list">
-              <p class="priority-empty">Press "Calculate Route" to see the optimized visit order.</p>
-            </div>
-            <div class="priority-legend">
-              <div class="pl-item"><span class="pl-dot" style="background:#e8aa30"></span>Elderly</div>
-              <div class="pl-item"><span class="pl-dot" style="background:#77b6ff"></span>Disabled</div>
-              <div class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>Both needs</div>
-              <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer</div>
-            </div>
-          </div>
-        </div>
+    <!-- SLIDE 8 · SOLUTION GATEWAY ----------------------- -->
+    <section class="fp-slide slide-gateway" data-slide="8">
+      <div class="meander-bar"></div>
+      <div class="gateway-inner">
+        <p class="eyebrow stagger-1">Solution Mode</p>
+        <h2 class="stagger-2">Volunteer Priority Routing</h2>
+        <p class="gateway-desc stagger-3">An interactive tool for coordinating volunteer response — ranking residents by vulnerability, floor level, and proximity in real time.</p>
+        <a href="solution.html" class="btn-enter stagger-4">
+          Explore the Tool
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
+      <div class="meander-bar"></div>
     </section>
 
     <!-- SLIDE 9 · REFRAME + FOOTER ----------------------- -->

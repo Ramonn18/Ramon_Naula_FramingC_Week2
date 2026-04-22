@@ -1,0 +1,105 @@
+/* ============================================================
+   SOLUTION PAGE LAYOUT
+   ============================================================ */
+body.solution-mode {
+  display: flex;
+  flex-direction: column;
+  /* height: 100% and overflow: hidden already set by style.css */
+}
+
+/* ============================================================
+   HEADER BAR
+   ============================================================ */
+.sol-header {
+  height: 52px;
+  background: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(42, 96, 223, 0.2);
+}
+
+.sol-back {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(202, 230, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.sol-back:hover { color: rgba(202, 230, 255, 1); }
+.sol-back svg { flex-shrink: 0; transition: transform 0.2s ease; }
+.sol-back:hover svg { transform: translateX(-3px); }
+
+.sol-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.sol-badge {
+  font-size: 0.62rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-2);
+  padding: 0.22rem 0.65rem;
+  border: 1px solid rgba(119, 182, 255, 0.3);
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.sol-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sol-intro {
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+}
+
+.sol-intro h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--blue-dark);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0.25rem 0 0.3rem;
+}
+
+/* Override solution-body to also work as flex child */
+.sol-main .solution-body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 640px) {
+  .sol-header { padding: 0 1rem; }
+  .sol-title  { display: none; }
+  .sol-main   { padding: 1rem; }
+
+  .sol-main .solution-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+  .priority-panel { max-height: 220px; }
+}
