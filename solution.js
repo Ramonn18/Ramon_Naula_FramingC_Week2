@@ -1,6 +1,44 @@
 /* ============================================================
-   VOLUNTEER ROUTING SYSTEM — solution.js
+   EVROS WILDFIRE — VOLUNTEER ROUTING TOOL
+   Map:     Leaflet.js + CartoDB Positron (no API key)
+   Fire:    Approximate perimeter — Copernicus EMSN166 activation
+   Villages: OpenStreetMap Overpass API (real coordinates)
    ============================================================ */
+
+/* ----------------------------------------------------------
+   FIRE PERIMETER
+   Source: Copernicus EMS EMSN166 — WildfireDEL (delineation)
+   112 burn patches · 92,321 ha · photo-interpreted
+   Loaded from fire_perimeter.js (FIRE_PERIMETER_DATA global)
+   ---------------------------------------------------------- */
+
+/* ----------------------------------------------------------
+   AFFECTED VILLAGES
+   Source: OpenStreetMap Overpass API (real coordinates)
+   Cross-referenced with Copernicus EMSN166 activation page
+   and news reports of evacuated settlements.
+   ---------------------------------------------------------- */
+const AFFECTED_VILLAGES = [
+  { name: 'Aristino',   lat: 40.8729, lon: 25.9981, note: 'Fire origin — evacuated Aug 19' },
+  { name: 'Avantas',    lat: 40.9328, lon: 25.9160, note: 'First evacuation wave' },
+  { name: 'Nipsa',      lat: 40.9302, lon: 26.0177, note: 'First evacuation wave' },
+  { name: 'Aetochori',  lat: 40.8983, lon: 25.9976, note: 'First evacuation wave' },
+  { name: 'Pefka',      lat: 40.9008, lon: 26.0413, note: 'First evacuation wave' },
+  { name: 'Loutros',    lat: 40.8812, lon: 26.0468, note: 'Second evacuation wave' },
+  { name: 'Agnantia',   lat: 40.8828, lon: 25.9767, note: 'Second evacuation wave' },
+  { name: 'Doriko',     lat: 40.9090, lon: 25.9797, note: 'Second evacuation wave' },
+  { name: 'Lefkimmi',   lat: 41.0234, lon: 26.1975, note: 'Fire zone' },
+  { name: 'Lykofos',    lat: 41.1200, lon: 26.2893, note: 'Fire zone' },
+  { name: 'Dadia',      lat: 41.1293, lon: 26.2249, note: 'Epicenter — Dadia NP' },
+  { name: 'Sidiro',     lat: 41.2466, lon: 26.1314, note: 'Fire zone (north)' },
+];
+
+/* ----------------------------------------------------------
+   VULNERABLE RESIDENTS
+   Representative persons placed at real evacuated village
+   coordinates. Not real personal data — modelled after the
+   demographic profile of affected communities.
+   ---------------------------------------------------------- */
 const RESIDENT_COLORS = {
   elderly:  '#e8aa30',
   disabled: '#77b6ff',
@@ -8,48 +46,80 @@ const RESIDENT_COLORS = {
 };
 
 const RESIDENTS_DATA = [
-  { id: 'r1', name: 'Mr. Papadopoulos',  type: 'elderly',  floor: 3, x: 0.18, y: 0.22, note: 'Age 82, mobility aid' },
-  { id: 'r2', name: 'Ms. Stavros',       type: 'disabled', floor: 0, x: 0.62, y: 0.14, note: 'Wheelchair user' },
-  { id: 'r3', name: 'Mrs. Karagianni',   type: 'both',     floor: 4, x: 0.78, y: 0.36, note: 'Age 79, mobility impaired' },
-  { id: 'r4', name: 'Mr. Nikolaou',      type: 'elderly',  floor: 1, x: 0.26, y: 0.58, note: 'Age 74, hearing impaired' },
-  { id: 'r5', name: 'Ms. Demetriou',     type: 'disabled', floor: 2, x: 0.72, y: 0.64, note: 'Visual impairment' },
-  { id: 'r6', name: 'Mrs. Alexiou',      type: 'both',     floor: 5, x: 0.44, y: 0.80, note: 'Age 85, confined to bed' },
-  { id: 'r7', name: 'Mr. Christodoulou', type: 'elderly',  floor: 0, x: 0.84, y: 0.82, note: 'Age 71, lives alone' },
+  {
+    id: 'r1', name: 'Mr. Karakostas',
+    type: 'both',     lat: 40.8731, lon: 25.9992, floor: 1,
+    note: 'Age 81, mobility aid — Aristino (fire origin)',
+  },
+  {
+    id: 'r2', name: 'Ms. Pavlidou',
+    type: 'disabled', lat: 40.9326, lon: 25.9158, floor: 0,
+    note: 'Wheelchair user — Avantas',
+  },
+  {
+    id: 'r3', name: 'Mrs. Tsoukalas',
+    type: 'elderly',  lat: 40.9304, lon: 26.0179, floor: 0,
+    note: 'Age 77, lives alone — Nipsa',
+  },
+  {
+    id: 'r4', name: 'Mr. Demetriou',
+    type: 'elderly',  lat: 40.8985, lon: 25.9974, floor: 1,
+    note: 'Age 74, hearing impaired — Aetochori',
+  },
+  {
+    id: 'r5', name: 'Mrs. Zervou',
+    type: 'both',     lat: 41.1291, lon: 26.2251, floor: 0,
+    note: 'Age 85, confined to bed — Dadia (epicenter)',
+  },
+  {
+    id: 'r6', name: 'Mr. Alexiou',
+    type: 'disabled', lat: 41.0232, lon: 26.1977, floor: 0,
+    note: 'Visual impairment — Lefkimmi',
+  },
+  {
+    id: 'r7', name: 'Ms. Nikolaidou',
+    type: 'elderly',  lat: 41.1198, lon: 26.2891, floor: 1,
+    note: 'Age 79, mobility impaired — Lykofos',
+  },
+  {
+    id: 'r8', name: 'Mr. Stavrakis',
+    type: 'both',     lat: 41.2464, lon: 26.1312, floor: 0,
+    note: 'Age 82, wheelchair — Sidiro (north)',
+  },
 ];
 
-const VOLUNTEER_START = { x: 0.50, y: 0.50 };
+/* Volunteer stages at Feres — on E90, outside the fire zone */
+const VOLUNTEER_START = { lat: 40.8942, lon: 26.1741 };
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let leafletMap    = null;
+let routePolyline = null;
+let residentMarkers = []; // [{ id, marker }]
 let routingAnimating = false;
 
 /* ============================================================
-   TOOLTIP
+   TOOLTIP (shared HTML overlay — consistent with main deck)
    ============================================================ */
 const tooltip = document.getElementById('tooltip');
 
-function showTooltip(event, d) {
-  const deathHtml = d.deaths == null
-    ? ''
-    : d.deaths > 0
-      ? `<div class="tt-deaths">${d.deaths} death${d.deaths > 1 ? 's' : ''} recorded</div>`
-      : `<div class="tt-deaths no-count">No direct fatality count in emergency records</div>`;
-
-  const descHtml = d.desc ? `<div class="tt-desc">${d.desc}</div>` : '';
-
+function showTooltip(e, title, meta, desc) {
   tooltip.innerHTML = `
-    <div class="tt-title">${d.event}</div>
-    <div class="tt-meta">${d.year} &mdash; ${d.region}</div>
-    ${descHtml}
-    ${deathHtml}
+    <div class="tt-title">${title}</div>
+    <div class="tt-meta">${meta}</div>
+    ${desc ? `<div class="tt-desc">${desc}</div>` : ''}
   `;
   tooltip.classList.add('visible');
-  positionTooltip(event);
+  moveTooltip(e);
 }
 
-function positionTooltip(event) {
-  const pad = 16, tipW = 280;
-  const tipH = tooltip.offsetHeight || 120;
-  let x = event.clientX + pad;
-  let y = event.clientY - tipH / 2;
-  if (x + tipW > window.innerWidth)  x = event.clientX - tipW - pad;
+function moveTooltip(e) {
+  const pad = 16, tipW = 260;
+  const tipH = tooltip.offsetHeight || 80;
+  let x = e.clientX + pad;
+  let y = e.clientY - tipH / 2;
+  if (x + tipW > window.innerWidth)  x = e.clientX - tipW - pad;
   if (y < 8)                          y = 8;
   if (y + tipH > window.innerHeight) y = window.innerHeight - tipH - 8;
   tooltip.style.left = x + 'px';
@@ -59,161 +129,205 @@ function positionTooltip(event) {
 function hideTooltip() { tooltip.classList.remove('visible'); }
 
 /* ============================================================
-   SCORING & ROUTING ALGORITHM
+   GEOGRAPHIC DISTANCE — Haversine (metres)
    ============================================================ */
-function getResidentScore(resident, fromPos, mapW, mapH) {
-  const dx   = (resident.x - fromPos.x) * mapW;
-  const dy   = (resident.y - fromPos.y) * mapH;
-  const dist = Math.hypot(dx, dy) || 0.1;
-  const typeWeight  = { elderly: 1.2, disabled: 1.5, both: 2.2 };
-  const floorPenalty = 1 + (resident.floor || 0) * 0.4;
-  return (typeWeight[resident.type] * 100) / (dist * floorPenalty);
+function geoDistance(lat1, lon1, lat2, lon2) {
+  const R  = 6_371_000;
+  const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180;
+  const Δφ = (lat2 - lat1) * Math.PI / 180;
+  const Δλ = (lon2 - lon1) * Math.PI / 180;
+  const a  = Math.sin(Δφ / 2) ** 2
+           + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function computeRoute(residents, volunteer, mapW, mapH) {
-  const route = [];
+/* ============================================================
+   SCORING & ROUTING ALGORITHM
+   ============================================================ */
+function score(resident, fromPos) {
+  const dist        = geoDistance(fromPos.lat, fromPos.lon, resident.lat, resident.lon) || 1;
+  const typeWeight  = { elderly: 1.2, disabled: 1.5, both: 2.2 };
+  const floorPenalty = 1 + (resident.floor || 0) * 0.4;
+  return (typeWeight[resident.type] * 1e6) / (dist * floorPenalty);
+}
+
+function computeRoute(residents, start) {
+  const route     = [];
   const remaining = [...residents];
-  let current = { x: volunteer.x, y: volunteer.y };
+  let   current   = { lat: start.lat, lon: start.lon };
   while (remaining.length > 0) {
-    const scored = remaining
-      .map(r => ({ ...r, score: getResidentScore(r, current, mapW, mapH) }))
-      .sort((a, b) => b.score - a.score);
-    route.push(scored[0]);
-    remaining.splice(remaining.findIndex(r => r.id === scored[0].id), 1);
-    current = { x: scored[0].x, y: scored[0].y };
+    const best = remaining
+      .map(r => ({ ...r, _score: score(r, current) }))
+      .sort((a, b) => b._score - a._score)[0];
+    route.push(best);
+    remaining.splice(remaining.findIndex(r => r.id === best.id), 1);
+    current = { lat: best.lat, lon: best.lon };
   }
   return route;
 }
 
 /* ============================================================
-   DRAW MAP
+   MAP INITIALISATION
    ============================================================ */
-function drawNeighborhoodMap() {
-  const container = document.getElementById('routing-map');
-  if (!container) return;
-  const panel = container.parentElement;
-  const W = panel.clientWidth  || 500;
-  const H = panel.clientHeight || 380;
-
-  const svg = d3.select('#routing-map').attr('width', W).attr('height', H);
-  svg.selectAll('*').remove();
-
-  const defs = svg.append('defs');
-  const gridSize = Math.round(Math.min(W, H) / 8);
-  defs.append('pattern')
-    .attr('id', 'map-grid').attr('width', gridSize).attr('height', gridSize)
-    .attr('patternUnits', 'userSpaceOnUse')
-    .append('rect').attr('width', gridSize).attr('height', gridSize)
-    .attr('fill', 'none').attr('stroke', 'rgba(42,96,223,0.09)').attr('stroke-width', 1);
-
-  svg.append('rect').attr('width', W).attr('height', H).attr('fill', 'url(#map-grid)');
-
-  [
-    [0.04,0.04,0.17,0.17],[0.26,0.04,0.20,0.13],[0.58,0.04,0.15,0.20],
-    [0.78,0.04,0.18,0.16],[0.04,0.30,0.13,0.22],[0.77,0.28,0.19,0.17],
-    [0.04,0.64,0.13,0.20],[0.23,0.65,0.20,0.17],[0.59,0.73,0.15,0.18],
-    [0.79,0.70,0.17,0.24],
-  ].forEach(([bx,by,bw,bh]) => {
-    svg.append('rect')
-      .attr('x', bx*W).attr('y', by*H).attr('width', bw*W).attr('height', bh*H)
-      .attr('fill','rgba(42,96,223,0.045)').attr('stroke','rgba(42,96,223,0.1)')
-      .attr('stroke-width',1).attr('rx',2);
+function initMap() {
+  leafletMap = L.map('routing-map', {
+    center: [41.05, 26.10],
+    zoom: 10,
+    zoomControl: true,
   });
 
-  svg.append('path').attr('id','route-path')
-    .attr('fill','none').attr('stroke','#2a60df').attr('stroke-width',2.5)
-    .attr('stroke-linecap','round').attr('opacity',0);
+  /* CartoDB Positron — clean light basemap, no API key */
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
+      '&copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19,
+  }).addTo(leafletMap);
 
-  const vg = svg.append('g').attr('class','volunteer-marker')
-    .attr('transform',`translate(${VOLUNTEER_START.x*W},${VOLUNTEER_START.y*H})`);
-  vg.append('circle').attr('r',16).attr('fill','rgba(34,197,94,0.12)');
-  vg.append('circle').attr('r', 9).attr('fill','#22c55e');
-  vg.append('text').attr('text-anchor','middle').attr('dominant-baseline','central')
-    .attr('font-size','9px').attr('font-family','Inter,sans-serif')
-    .attr('fill','#fff').attr('font-weight','700').text('V');
-  vg.append('text').attr('y',-22).attr('text-anchor','middle')
-    .attr('font-size','9px').attr('font-family','Cinzel,serif')
-    .attr('fill','#166534').attr('font-weight','600').text('Volunteer');
+  /* Fire perimeter — Copernicus EMSN166 WildfireDEL -------- */
+  L.geoJSON(FIRE_PERIMETER_DATA, {
+    style: {
+      color:       '#c0392b',
+      weight:       1.5,
+      dashArray:   null,
+      fillColor:   '#e74c3c',
+      fillOpacity:  0.18,
+    },
+  })
+  .bindTooltip(
+    '<strong>Evros Wildfire — Aug 2023</strong><br>' +
+    '<small>Copernicus EMSN166 · 92,321 ha<br>' +
+    'Dadia National Park & surrounding region</small>',
+    { sticky: true, className: 'lf-fire-tip' }
+  )
+  .addTo(leafletMap);
 
-  RESIDENTS_DATA.forEach(res => {
-    const color = RESIDENT_COLORS[res.type];
+  /* Village reference markers ----------------------------- */
+  AFFECTED_VILLAGES.forEach(v => {
+    L.circleMarker([v.lat, v.lon], {
+      radius:      5,
+      color:       'rgba(60,80,120,0.5)',
+      fillColor:   'rgba(60,80,120,0.12)',
+      fillOpacity: 1,
+      weight:      1.5,
+    })
+    .bindTooltip(
+      `<strong>${v.name}</strong><br><small>${v.note}</small>`,
+      { className: 'lf-village-tip' }
+    )
+    .addTo(leafletMap);
+  });
+
+  /* Volunteer marker -------------------------------------- */
+  const volIcon = L.divIcon({
+    className: '',
+    html: `<div class="lf-vol-dot">V</div><span class="lf-vol-label">Volunteer<br>Feres</span>`,
+    iconSize:   [24, 24],
+    iconAnchor: [12, 12],
+  });
+  L.marker([VOLUNTEER_START.lat, VOLUNTEER_START.lon], { icon: volIcon })
+   .bindTooltip(
+     '<strong>Volunteer — Feres staging</strong><br>' +
+     '<small>E90 highway · outside fire zone</small>',
+     { className: 'lf-vol-tip' }
+   )
+   .addTo(leafletMap);
+
+  /* Resident markers -------------------------------------- */
+  residentMarkers = RESIDENTS_DATA.map(res => {
+    const color   = RESIDENT_COLORS[res.type];
     const initial = res.type === 'elderly' ? 'E' : res.type === 'disabled' ? 'D' : 'B';
-    const rg = svg.append('g').attr('class',`resident-marker res-${res.id}`)
-      .attr('transform',`translate(${res.x*W},${res.y*H})`)
-      .style('cursor','pointer');
 
-    rg.append('circle').attr('r',17).attr('fill',color).attr('fill-opacity',0.1);
-    rg.append('circle').attr('r', 9).attr('fill',color).attr('fill-opacity',0.92)
-      .attr('stroke','white').attr('stroke-width',1.5);
-    rg.append('text').attr('text-anchor','middle').attr('dominant-baseline','central')
-      .attr('font-size','7.5px').attr('font-family','Inter,sans-serif')
-      .attr('fill','#fff').attr('font-weight','700').text(initial);
+    const icon = L.divIcon({
+      className: '',
+      html: `
+        <div class="lf-res-wrap">
+          ${res.floor > 0
+            ? `<span class="lf-floor" style="background:${color}">F${res.floor}</span>`
+            : ''}
+          <div class="lf-res-dot" id="dot-${res.id}" style="background:${color}">${initial}</div>
+        </div>`,
+      iconSize:   [24, 32],
+      iconAnchor: [12, 24],
+    });
 
-    if (res.floor > 0) {
-      rg.append('rect').attr('x',5).attr('y',-21).attr('width',19).attr('height',11)
-        .attr('fill',color).attr('rx',2);
-      rg.append('text').attr('x',14.5).attr('y',-13).attr('text-anchor','middle')
-        .attr('font-size','7px').attr('font-family','Inter,sans-serif')
-        .attr('fill','white').attr('font-weight','700').text(`F${res.floor}`);
-    }
+    const marker = L.marker([res.lat, res.lon], { icon })
+      .on('mouseover', e => showTooltip(
+          e.originalEvent,
+          res.name,
+          `${res.type.charAt(0).toUpperCase() + res.type.slice(1)} · Floor ${res.floor}`,
+          res.note
+        ))
+      .on('mousemove',  e => moveTooltip(e.originalEvent))
+      .on('mouseout',   hideTooltip)
+      .addTo(leafletMap);
 
-    rg.on('mouseover', (event) => showTooltip(event, {
-        event: res.name,
-        year:  res.type.charAt(0).toUpperCase() + res.type.slice(1),
-        region:`Floor ${res.floor} · ${res.note}`,
-        deaths: null,
-      }))
-      .on('mousemove', positionTooltip)
-      .on('mouseout',  hideTooltip);
+    return { id: res.id, marker, color, initial };
   });
 
-  RESIDENTS_DATA.forEach(res => {
-    svg.append('circle').attr('class',`vo-ring vo-${res.id}`)
-      .attr('cx',res.x*W).attr('cy',res.y*H).attr('r',17)
-      .attr('fill','none').attr('stroke','#2a60df').attr('stroke-width',2).attr('opacity',0);
-    svg.append('text').attr('class',`vo-num vn-${res.id}`)
-      .attr('x',res.x*W - 20).attr('y',res.y*H - 18)
-      .attr('font-size','10px').attr('font-family','Cinzel,serif')
-      .attr('fill','#2a60df').attr('font-weight','700').attr('opacity',0);
-  });
+  /* Data source notice (bottom-left control) -------------- */
+  const notice = L.control({ position: 'bottomleft' });
+  notice.onAdd = () => {
+    const d = L.DomUtil.create('div', 'lf-data-notice');
+    d.innerHTML =
+      'Villages: OpenStreetMap &nbsp;|&nbsp; ' +
+      'Fire boundary: <a href="https://mapping.emergency.copernicus.eu/activations/EMSN166/" target="_blank">' +
+      'Copernicus EMS EMSN166</a> &nbsp;|&nbsp; 92,321 ha · 112 burn patches';
+    return d;
+  };
+  notice.addTo(leafletMap);
+
+  /* Fit map to show the full fire zone on load */
+  leafletMap.fitBounds([[40.83, 25.85], [41.30, 26.35]], { padding: [30, 30] });
 }
 
 /* ============================================================
-   ANIMATE ROUTE
+   CALCULATE & ANIMATE ROUTE
    ============================================================ */
 function calculateAndAnimateRoute() {
   if (routingAnimating) return;
   routingAnimating = true;
 
-  const mapEl = document.getElementById('routing-map');
-  if (!mapEl) return;
-  const W = +mapEl.getAttribute('width') || 500;
-  const H = +mapEl.getAttribute('height') || 380;
+  if (routePolyline) { leafletMap.removeLayer(routePolyline); routePolyline = null; }
 
-  const route = computeRoute(RESIDENTS_DATA, VOLUNTEER_START, W, H);
+  const route = computeRoute(RESIDENTS_DATA, VOLUNTEER_START);
 
-  const pts = [
-    { x: VOLUNTEER_START.x * W, y: VOLUNTEER_START.y * H },
-    ...route.map(r => ({ x: r.x * W, y: r.y * H })),
-  ];
-  const lineFn  = d3.line().x(d => d.x).y(d => d.y).curve(d3.curveCatmullRom.alpha(0.5));
-  const pathEl  = d3.select('#route-path').attr('d', lineFn(pts)).attr('opacity', 1);
-  const totalLen = pathEl.node().getTotalLength();
-
-  pathEl.attr('stroke-dasharray', `${totalLen} ${totalLen}`)
-    .attr('stroke-dashoffset', totalLen)
-    .transition().duration(route.length * 600).ease(d3.easeLinear)
-    .attr('stroke-dashoffset', 0);
+  /* Build progressive polyline starting from volunteer */
+  const lineCoords = [[VOLUNTEER_START.lat, VOLUNTEER_START.lon]];
+  routePolyline = L.polyline(lineCoords, {
+    color:     '#2a60df',
+    weight:     3,
+    lineJoin:  'round',
+    opacity:    0.85,
+  }).addTo(leafletMap);
 
   const listEl = document.getElementById('priority-list');
   listEl.innerHTML = '';
 
-  route.forEach((res, i) => {
-    const prevPos = i === 0 ? VOLUNTEER_START : route[i - 1];
-    const score   = getResidentScore(res, prevPos, W, H).toFixed(1);
-    const color   = RESIDENT_COLORS[res.type];
+  const STEP = 700; // ms per stop
 
+  route.forEach((res, i) => {
     setTimeout(() => {
+      /* Extend the route line to this stop */
+      lineCoords.push([res.lat, res.lon]);
+      routePolyline.setLatLngs([...lineCoords]);
+
+      /* Update the resident dot to show visit order */
+      const dot = document.getElementById(`dot-${res.id}`);
+      if (dot) {
+        dot.textContent = i + 1;
+        dot.style.background  = '#2a60df';
+        dot.style.borderColor = 'white';
+        dot.classList.add('dot-visited');
+      }
+
+      /* Add priority list item */
+      const prevPos  = i === 0 ? VOLUNTEER_START : { lat: route[i-1].lat, lon: route[i-1].lon };
+      const distKm   = (geoDistance(prevPos.lat, prevPos.lon, res.lat, res.lon) / 1000).toFixed(1);
+      const priority = score(res, prevPos).toFixed(0);
+      const color    = RESIDENT_COLORS[res.type];
+
       const item = document.createElement('div');
       item.className = 'priority-item';
       item.style.borderLeftColor = color;
@@ -222,47 +336,51 @@ function calculateAndAnimateRoute() {
         <span class="pi-dot" style="background:${color}"></span>
         <div class="pi-info">
           <div class="pi-name">${res.name}</div>
-          <div class="pi-detail">${res.type.charAt(0).toUpperCase()+res.type.slice(1)} · Fl.${res.floor} · priority ${score}</div>
+          <div class="pi-detail">
+            ${res.type.charAt(0).toUpperCase() + res.type.slice(1)}
+            &nbsp;·&nbsp; Fl.${res.floor}
+            &nbsp;·&nbsp; ${distKm} km
+          </div>
         </div>`;
       listEl.appendChild(item);
       requestAnimationFrame(() => item.classList.add('visible'));
 
-      d3.select(`.vo-${res.id}`).transition().duration(200).attr('opacity', 1);
-      d3.select(`.vn-${res.id}`).text(i + 1).transition().duration(200).attr('opacity', 1);
-    }, i * 600);
+    }, i * STEP);
   });
 
-  setTimeout(() => { routingAnimating = false; }, route.length * 600 + 400);
-}
-
-function resetRoute() {
-  routingAnimating = false;
-  d3.select('#route-path').attr('opacity', 0).attr('stroke-dashoffset', 0);
-  RESIDENTS_DATA.forEach(res => {
-    d3.select(`.vo-${res.id}`).attr('opacity', 0);
-    d3.select(`.vn-${res.id}`).attr('opacity', 0);
-  });
-  const listEl = document.getElementById('priority-list');
-  listEl.innerHTML = '<p class="priority-empty">Press "Calculate Route" to see the optimized visit order.</p>';
+  setTimeout(() => { routingAnimating = false; }, route.length * STEP + 400);
 }
 
 /* ============================================================
-   INIT & RESIZE
+   RESET
+   ============================================================ */
+function resetRoute() {
+  routingAnimating = false;
+  if (routePolyline) { leafletMap.removeLayer(routePolyline); routePolyline = null; }
+
+  /* Restore original resident dot labels */
+  residentMarkers.forEach(({ id, color, initial }) => {
+    const dot = document.getElementById(`dot-${id}`);
+    if (dot) {
+      dot.textContent = initial;
+      dot.style.background  = color;
+      dot.style.borderColor = 'white';
+      dot.classList.remove('dot-visited');
+    }
+  });
+
+  const listEl = document.getElementById('priority-list');
+  listEl.innerHTML =
+    '<p class="priority-empty">Press "Calculate Route" to see the optimized visit order.</p>';
+}
+
+/* ============================================================
+   INIT
    ============================================================ */
 window.addEventListener('load', () => {
   requestAnimationFrame(() => {
-    drawNeighborhoodMap();
+    initMap();
     document.getElementById('btn-route')?.addEventListener('click', calculateAndAnimateRoute);
     document.getElementById('btn-reset')?.addEventListener('click', resetRoute);
   });
 });
-
-let _rt;
-window.addEventListener('resize', () => {
-  clearTimeout(_rt);
-  _rt = setTimeout(() => {
-    d3.select('#routing-map').selectAll('*').remove();
-    drawNeighborhoodMap();
-    resetRoute();
-  }, 280);
-}, { passive: true });

@@ -4,7 +4,6 @@
 body.solution-mode {
   display: flex;
   flex-direction: column;
-  /* height: 100% and overflow: hidden already set by style.css */
 }
 
 /* ============================================================
@@ -39,9 +38,9 @@ body.solution-mode {
 
 .sol-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: #ffffff;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   font-weight: 600;
 }
 
@@ -63,31 +62,187 @@ body.solution-mode {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 2rem 1rem;
-  max-width: 1200px;
+  padding: 1.25rem 2rem 0.75rem;
+  max-width: 1280px;
   margin: 0 auto;
   width: 100%;
 }
 
 .sol-intro {
   flex-shrink: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
 }
 
 .sol-intro h1 {
   font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--blue-dark);
   font-weight: 700;
   letter-spacing: 0.03em;
-  margin: 0.25rem 0 0.3rem;
+  margin: 0.2rem 0 0.25rem;
 }
 
-/* Override solution-body to also work as flex child */
+.data-link {
+  color: var(--blue-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: inherit;
+}
+.data-link:hover { color: var(--blue-dark); }
+
 .sol-main .solution-body {
   flex: 1;
   min-height: 0;
 }
+
+/* ============================================================
+   LEAFLET MAP CONTAINER
+   ============================================================ */
+
+/* Reset Leaflet's default div-icon box */
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* The Leaflet map div must have explicit height */
+#routing-map {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ============================================================
+   VOLUNTEER MARKER
+   ============================================================ */
+.lf-vol-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2), 0 2px 8px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 9px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+.lf-vol-label {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 7.5px;
+  font-family: 'Cinzel', serif;
+  color: #166534;
+  font-weight: 600;
+  background: rgba(255,255,255,0.9);
+  padding: 1px 5px;
+  border-radius: 2px;
+  line-height: 1.4;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ============================================================
+   RESIDENT MARKERS
+   ============================================================ */
+.lf-res-wrap {
+  position: relative;
+  width: 24px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.lf-res-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lf-res-dot:hover {
+  transform: scale(1.18);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.28);
+}
+
+.lf-res-dot.dot-visited {
+  box-shadow: 0 0 0 3px rgba(42, 96, 223, 0.35), 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.lf-floor {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  font-size: 7px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ============================================================
+   LEAFLET CUSTOM TOOLTIPS
+   ============================================================ */
+.lf-fire-tip,
+.lf-village-tip,
+.lf-vol-tip,
+.lf-res-tooltip {
+  background: var(--dark) !important;
+  border: 1px solid rgba(42,96,223,0.3) !important;
+  color: #fff !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  line-height: 1.5 !important;
+  padding: 0.55rem 0.8rem !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 16px rgba(15,29,61,0.3) !important;
+}
+
+.lf-fire-tip::before,
+.lf-village-tip::before,
+.lf-vol-tip::before { display: none !important; }
+
+/* ============================================================
+   DATA SOURCE NOTICE (Leaflet control)
+   ============================================================ */
+.lf-data-notice {
+  background: rgba(15, 29, 61, 0.82);
+  color: rgba(202, 230, 255, 0.65);
+  font-size: 0.65rem;
+  font-family: 'Inter', sans-serif;
+  padding: 0.35rem 0.65rem;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(4px);
+}
+
+.lf-data-notice a {
+  color: var(--blue-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lf-data-notice a:hover { color: #fff; }
 
 /* ============================================================
    RESPONSIVE
@@ -95,7 +250,7 @@ body.solution-mode {
 @media (max-width: 640px) {
   .sol-header { padding: 0 1rem; }
   .sol-title  { display: none; }
-  .sol-main   { padding: 1rem; }
+  .sol-main   { padding: 0.75rem 1rem 0.5rem; }
 
   .sol-main .solution-body {
     grid-template-columns: 1fr;

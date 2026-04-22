@@ -7,9 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="solution.css" />
-  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body class="solution-mode">
 
@@ -25,21 +26,21 @@
       </svg>
       Back to Presentation
     </a>
-    <span class="sol-title">Volunteer Priority Routing</span>
-    <span class="sol-badge">Solution Mode</span>
+    <span class="sol-title">Volunteer Priority Routing — Evros Wildfire</span>
+    <span class="sol-badge">Support Mode</span>
   </header>
 
   <!-- Main tool area -->
   <main class="sol-main">
     <div class="sol-intro">
-      <p class="solution-eyebrow">Proposed Solution</p>
-      <h1>Athens Neighbourhood Response Map</h1>
-      <p class="chart-desc">Residents ranked by vulnerability type, floor level &amp; distance. Press Calculate Route to animate the optimal path.</p>
+      <p class="solution-eyebrow">Support Mode</p>
+      <h1>Evros Region — August 2023</h1>
+      <p class="chart-desc">Village locations: OpenStreetMap · Fire boundary: <a class="data-link" href="https://mapping.emergency.copernicus.eu/activations/EMSN166/" target="_blank">Copernicus EMS EMSN166</a> · 92,321 ha · 112 burn patches · Volunteer stages from Feres (E90)</p>
     </div>
 
     <div class="solution-body">
       <div class="map-panel">
-        <svg id="routing-map"></svg>
+        <div id="routing-map"></div>
       </div>
       <div class="priority-panel">
         <div class="priority-header">
@@ -54,12 +55,16 @@
           <div class="pl-item"><span class="pl-dot" style="background:#e8aa30"></span>Elderly</div>
           <div class="pl-item"><span class="pl-dot" style="background:#77b6ff"></span>Disabled</div>
           <div class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>Both needs</div>
-          <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer</div>
+          <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer (Feres)</div>
         </div>
       </div>
     </div>
   </main>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Copernicus EMSN166 fire perimeter data -->
+  <script src="fire_perimeter.js"></script>
   <script src="solution.js"></script>
 </body>
 </html>
