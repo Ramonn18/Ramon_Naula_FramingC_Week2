@@ -94,10 +94,23 @@ const VOLUNTEER_START = { lat: 40.8942, lon: 26.1741 };
 /* ============================================================
    STATE
    ============================================================ */
-let leafletMap    = null;
-let routePolyline = null;
-let residentMarkers = []; // [{ id, marker }]
+let leafletMap      = null;
+let routePolyline   = null;
+let residentMarkers = [];
 let routingAnimating = false;
+
+function updateStatus(state) {
+  const el = document.getElementById('route-status');
+  if (!el) return;
+  const labels = { ready: 'READY', routing: 'ROUTING', complete: 'COMPLETE' };
+  el.dataset.state = state;
+  el.textContent   = labels[state] || state.toUpperCase();
+}
+
+function setRouteBtn(disabled) {
+  const btn = document.getElementById('btn-route');
+  if (btn) btn.disabled = disabled;
+}
 
 /* ============================================================
    TOOLTIP (shared HTML overlay — consistent with main deck)
@@ -176,8 +189,8 @@ function initMap() {
     zoomControl: true,
   });
 
-  /* CartoDB Positron — clean light basemap, no API key */
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  /* CartoDB Dark Matter — high-contrast field tool aesthetic */
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
       '&copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -185,32 +198,14 @@ function initMap() {
     maxZoom: 19,
   }).addTo(leafletMap);
 
-  /* Fire perimeter — Copernicus EMSN166 WildfireDEL -------- */
-  L.geoJSON(FIRE_PERIMETER_DATA, {
-    style: {
-      color:       '#c0392b',
-      weight:       1.5,
-      dashArray:   null,
-      fillColor:   '#e74c3c',
-      fillOpacity:  0.18,
-    },
-  })
-  .bindTooltip(
-    '<strong>Evros Wildfire — Aug 2023</strong><br>' +
-    '<small>Copernicus EMSN166 · 92,321 ha<br>' +
-    'Dadia National Park & surrounding region</small>',
-    { sticky: true, className: 'lf-fire-tip' }
-  )
-  .addTo(leafletMap);
-
-  /* Village reference markers ----------------------------- */
+  /* Village reference markers — subtle on dark bg ---------- */
   AFFECTED_VILLAGES.forEach(v => {
     L.circleMarker([v.lat, v.lon], {
-      radius:      5,
-      color:       'rgba(60,80,120,0.5)',
-      fillColor:   'rgba(60,80,120,0.12)',
+      radius:      4,
+      color:       'rgba(140, 175, 230, 0.45)',
+      fillColor:   'rgba(140, 175, 230, 0.12)',
       fillOpacity: 1,
-      weight:      1.5,
+      weight:      1.2,
     })
     .bindTooltip(
       `<strong>${v.name}</strong><br><small>${v.note}</small>`,
@@ -278,55 +273,91 @@ function initMap() {
   };
   notice.addTo(leafletMap);
 
-  /* Fit map to show the full fire zone on load */
-  leafletMap.fitBounds([[40.83, 25.85], [41.30, 26.35]], { padding: [30, 30] });
+  /* Fit map after layout is painted — invalidateSize ensures correct tile sizing */
+  setTimeout(() => {
+    leafletMap.invalidateSize();
+    leafletMap.fitBounds([[40.82, 25.61], [41.25, 26.30]], { padding: [36, 36] });
+  }, 120);
 }
 
 /* ============================================================
    CALCULATE & ANIMATE ROUTE
    ============================================================ */
+const URGENCY = { both: 'CRITICAL', disabled: 'HIGH', elderly: 'MODERATE' };
+const URGENCY_COLOR = { CRITICAL: '#a78bfa', HIGH: '#77b6ff', MODERATE: '#e8aa30' };
+
 function calculateAndAnimateRoute() {
   if (routingAnimating) return;
   routingAnimating = true;
+  updateStatus('routing');
+  setRouteBtn(true);
 
   if (routePolyline) { leafletMap.removeLayer(routePolyline); routePolyline = null; }
 
   const route = computeRoute(RESIDENTS_DATA, VOLUNTEER_START);
 
-  /* Build progressive polyline starting from volunteer */
-  const lineCoords = [[VOLUNTEER_START.lat, VOLUNTEER_START.lon]];
-  routePolyline = L.polyline(lineCoords, {
-    color:     '#2a60df',
-    weight:     3,
+  /* Full dashed route shown immediately — gives volunteers the whole picture */
+  const fullCoords = [
+    [VOLUNTEER_START.lat, VOLUNTEER_START.lon],
+    ...route.map(r => [r.lat, r.lon]),
+  ];
+  const dashLine = L.polyline(fullCoords, {
+    color:     'rgba(91, 157, 255, 0.25)',
+    weight:     2,
+    opacity:    1,
+    dashArray: '5 9',
     lineJoin:  'round',
-    opacity:    0.85,
   }).addTo(leafletMap);
+
+  /* Solid progress line drawn segment by segment */
+  const progressCoords = [[VOLUNTEER_START.lat, VOLUNTEER_START.lon]];
+  const progressLine = L.polyline(progressCoords, {
+    color:    '#5b9dff',
+    weight:    4,
+    opacity:   0.95,
+    lineJoin: 'round',
+  }).addTo(leafletMap);
+
+  routePolyline = L.layerGroup([dashLine, progressLine]);
+
+  /* Fit map to the full route bounds */
+  leafletMap.fitBounds(L.latLngBounds(fullCoords), { padding: [48, 48] });
 
   const listEl = document.getElementById('priority-list');
   listEl.innerHTML = '';
 
-  const STEP = 700; // ms per stop
+  const STEP = 900;
+
+  /* Mark first stop as active (pulsing) before animation starts */
+  const firstDot = document.getElementById(`dot-${route[0].id}`);
+  if (firstDot) firstDot.classList.add('dot-active');
 
   route.forEach((res, i) => {
     setTimeout(() => {
-      /* Extend the route line to this stop */
-      lineCoords.push([res.lat, res.lon]);
-      routePolyline.setLatLngs([...lineCoords]);
+      /* Extend solid progress line to this stop */
+      progressCoords.push([res.lat, res.lon]);
+      progressLine.setLatLngs([...progressCoords]);
 
-      /* Update the resident dot to show visit order */
+      /* Mark current dot as visited, activate next */
       const dot = document.getElementById(`dot-${res.id}`);
       if (dot) {
+        dot.classList.remove('dot-active');
         dot.textContent = i + 1;
         dot.style.background  = '#2a60df';
-        dot.style.borderColor = 'white';
+        dot.style.borderColor = 'rgba(255,255,255,0.55)';
         dot.classList.add('dot-visited');
       }
+      if (i < route.length - 1) {
+        const nextDot = document.getElementById(`dot-${route[i + 1].id}`);
+        if (nextDot) nextDot.classList.add('dot-active');
+      }
 
-      /* Add priority list item */
+      /* Priority list item */
       const prevPos  = i === 0 ? VOLUNTEER_START : { lat: route[i-1].lat, lon: route[i-1].lon };
       const distKm   = (geoDistance(prevPos.lat, prevPos.lon, res.lat, res.lon) / 1000).toFixed(1);
-      const priority = score(res, prevPos).toFixed(0);
       const color    = RESIDENT_COLORS[res.type];
+      const urgency  = URGENCY[res.type];
+      const uColor   = URGENCY_COLOR[urgency];
 
       const item = document.createElement('div');
       item.className = 'priority-item';
@@ -337,18 +368,22 @@ function calculateAndAnimateRoute() {
         <div class="pi-info">
           <div class="pi-name">${res.name}</div>
           <div class="pi-detail">
-            ${res.type.charAt(0).toUpperCase() + res.type.slice(1)}
-            &nbsp;·&nbsp; Fl.${res.floor}
-            &nbsp;·&nbsp; ${distKm} km
+            <span class="pi-tag" style="background:${uColor}22;color:${uColor};border:1px solid ${uColor}44">${urgency}</span>
+            Fl.${res.floor} &nbsp;&middot;&nbsp; ${distKm} km
           </div>
         </div>`;
       listEl.appendChild(item);
       requestAnimationFrame(() => item.classList.add('visible'));
 
+      /* Completion */
+      if (i === route.length - 1) {
+        setTimeout(() => {
+          routingAnimating = false;
+          updateStatus('complete');
+        }, 500);
+      }
     }, i * STEP);
   });
-
-  setTimeout(() => { routingAnimating = false; }, route.length * STEP + 400);
 }
 
 /* ============================================================

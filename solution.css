@@ -1,103 +1,116 @@
 /* ============================================================
-   SOLUTION PAGE LAYOUT
+   SOLUTION PAGE — full-height tool layout
    ============================================================ */
 body.solution-mode {
   display: flex;
   flex-direction: column;
+  background: #0a1628;
 }
 
 /* ============================================================
-   HEADER BAR
+   HEADER
    ============================================================ */
 .sol-header {
   height: 52px;
-  background: var(--dark);
+  background: #080f1f;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0 1.75rem;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(42, 96, 223, 0.2);
+  border-bottom: 1px solid rgba(42, 96, 223, 0.18);
 }
 
 .sol-back {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   font-family: 'Cinzel', serif;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(202, 230, 255, 0.5);
+  color: rgba(119, 182, 255, 0.45);
   text-decoration: none;
   transition: color 0.2s ease;
+  min-width: 60px;
 }
-.sol-back:hover { color: rgba(202, 230, 255, 1); }
+.sol-back:hover { color: rgba(119, 182, 255, 0.9); }
 .sol-back svg { flex-shrink: 0; transition: transform 0.2s ease; }
 .sol-back:hover svg { transform: translateX(-3px); }
 
+.sol-header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+
 .sol-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.78rem;
-  color: #ffffff;
+  font-size: 0.76rem;
+  color: rgba(202, 230, 255, 0.9);
   letter-spacing: 0.06em;
   font-weight: 600;
+  line-height: 1;
+}
+
+.sol-loc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  color: rgba(119, 182, 255, 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1;
 }
 
 .sol-badge {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--blue-2);
-  padding: 0.22rem 0.65rem;
-  border: 1px solid rgba(119, 182, 255, 0.3);
+  color: rgba(119, 182, 255, 0.55);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(119, 182, 255, 0.18);
+  min-width: 80px;
+  text-align: right;
 }
 
 /* ============================================================
-   MAIN CONTENT
+   MAIN — fills remaining height, no extra intro
    ============================================================ */
 .sol-main {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.25rem 2rem 0.75rem;
-  max-width: 1280px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.sol-intro {
-  flex-shrink: 0;
-  margin-bottom: 0.65rem;
-}
-
-.sol-intro h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
-  color: var(--blue-dark);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  margin: 0.2rem 0 0.25rem;
-}
-
-.data-link {
-  color: var(--blue-1);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  font-size: inherit;
-}
-.data-link:hover { color: var(--blue-dark); }
-
-.sol-main .solution-body {
-  flex: 1;
-  min-height: 0;
+  padding: 0.9rem 1.5rem 0.9rem;
 }
 
 /* ============================================================
-   LEAFLET MAP CONTAINER
+   TWO-COLUMN LAYOUT
    ============================================================ */
+.solution-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 270px;
+  gap: 0.9rem;
+}
+
+/* ============================================================
+   MAP PANEL
+   ============================================================ */
+.map-panel {
+  position: relative;
+  background: #0d1c38;
+  border: 1px solid rgba(42, 96, 223, 0.15);
+  overflow: hidden;
+}
+
+/* Fills the positioned parent regardless of flex/grid height chain */
+#routing-map {
+  position: absolute;
+  inset: 0;
+}
 
 /* Reset Leaflet's default div-icon box */
 .leaflet-div-icon {
@@ -105,25 +118,287 @@ body.solution-mode {
   border: none !important;
 }
 
-/* Fill the positioned .map-panel regardless of flex/grid height chain */
-#routing-map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+/* ============================================================
+   QUEUE PANEL
+   ============================================================ */
+.priority-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+  background: #080f1f;
+  border: 1px solid rgba(42, 96, 223, 0.15);
+}
+
+.priority-header {
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 1px solid rgba(42, 96, 223, 0.1);
+  flex-shrink: 0;
+}
+
+.priority-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.priority-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(202, 230, 255, 0.85);
+  letter-spacing: 0.04em;
+}
+
+/* Status badge */
+.route-status {
+  font-size: 0.58rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  padding: 0.18rem 0.5rem;
+  border-radius: 1px;
+  text-transform: uppercase;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.route-status[data-state="ready"] {
+  background: rgba(100, 130, 170, 0.08);
+  color: rgba(140, 170, 220, 0.45);
+  border: 1px solid rgba(100, 130, 170, 0.15);
+}
+
+.route-status[data-state="routing"] {
+  background: rgba(42, 96, 223, 0.12);
+  color: #77b6ff;
+  border: 1px solid rgba(42, 96, 223, 0.3);
+  animation: status-blink 1.4s ease infinite;
+}
+
+.route-status[data-state="complete"] {
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.priority-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: rgba(119, 182, 255, 0.35);
+  letter-spacing: 0.02em;
+}
+
+/* Calculate Route CTA */
+.btn-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.75rem 1rem;
+  padding: 0.55rem 0;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  background: var(--blue-1, #2a60df);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s ease, opacity 0.18s ease;
+  flex-shrink: 0;
+}
+.btn-route:hover:not(:disabled) { background: #1a3fa0; }
+.btn-route:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   SCROLLABLE QUEUE
+   ============================================================ */
+.priority-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(42, 96, 223, 0.2) transparent;
+}
+.priority-list::-webkit-scrollbar       { width: 3px; }
+.priority-list::-webkit-scrollbar-track { background: transparent; }
+.priority-list::-webkit-scrollbar-thumb { background: rgba(42, 96, 223, 0.25); }
+
+/* Empty state */
+.priority-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  height: 100%;
+}
+
+.priority-empty svg {
+  color: rgba(119, 182, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.priority-empty p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(119, 182, 255, 0.35);
+  line-height: 1.6;
+  max-width: 180px;
+}
+
+.priority-empty strong {
+  color: rgba(119, 182, 255, 0.6);
+  font-weight: 500;
+}
+
+/* Queue items */
+.priority-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 1rem;
+  border-left: 2px solid transparent;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.priority-item + .priority-item {
+  border-top: 1px solid rgba(42, 96, 223, 0.07);
+}
+
+.priority-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pi-rank {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(202, 230, 255, 0.28);
+  min-width: 16px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.pi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.pi-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pi-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(202, 230, 255, 0.8);
+  line-height: 1.3;
+  margin-bottom: 0.2rem;
+}
+
+.pi-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  color: rgba(119, 182, 255, 0.45);
+  line-height: 1.4;
+}
+
+.pi-tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 1px;
+  margin-right: 0.3rem;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+/* ============================================================
+   FOOTER — legend + reset
+   ============================================================ */
+.priority-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-top: 1px solid rgba(42, 96, 223, 0.1);
+  flex-shrink: 0;
+}
+
+.priority-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.65rem;
+}
+
+.pl-item {
+  display: flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.62rem;
+  font-family: 'Inter', sans-serif;
+  color: rgba(119, 182, 255, 0.4);
+}
+
+.pl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.btn-reset {
+  padding: 0.3rem 0.7rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.07em;
+  background: transparent;
+  color: rgba(119, 182, 255, 0.4);
+  border: 1px solid rgba(42, 96, 223, 0.2);
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-reset:hover {
+  color: rgba(119, 182, 255, 0.8);
+  border-color: rgba(42, 96, 223, 0.5);
 }
 
 /* ============================================================
    VOLUNTEER MARKER
    ============================================================ */
 .lf-vol-dot {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #22c55e;
-  border: 2.5px solid #fff;
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2), 0 2px 8px rgba(0,0,0,0.18);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.18), 0 0 16px rgba(34, 197, 94, 0.35), 0 2px 8px rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,20 +410,21 @@ body.solution-mode {
 
 .lf-vol-label {
   position: absolute;
-  top: 30px;
+  top: 32px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: 7.5px;
-  font-family: 'Cinzel', serif;
-  color: #166534;
+  font-size: 7px;
+  font-family: 'Inter', sans-serif;
+  color: rgba(34, 197, 94, 0.9);
   font-weight: 600;
-  background: rgba(255,255,255,0.9);
-  padding: 1px 5px;
+  background: rgba(8, 15, 31, 0.88);
+  padding: 2px 6px;
   border-radius: 2px;
-  line-height: 1.4;
+  line-height: 1.5;
   text-align: center;
   pointer-events: none;
+  letter-spacing: 0.04em;
 }
 
 /* ============================================================
@@ -156,8 +432,8 @@ body.solution-mode {
    ============================================================ */
 .lf-res-wrap {
   position: relative;
-  width: 24px;
-  height: 32px;
+  width: 26px;
+  height: 34px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -165,29 +441,41 @@ body.solution-mode {
 }
 
 .lf-res-dot {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 2.5px solid #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 8px;
+  font-size: 9px;
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .lf-res-dot:hover {
-  transform: scale(1.18);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.28);
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.12), 0 3px 14px rgba(0,0,0,0.5);
 }
 
+/* Next stop to be visited — pulses */
+.lf-res-dot.dot-active {
+  animation: marker-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes marker-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4), 0 2px 10px rgba(0,0,0,0.5); }
+  50%       { box-shadow: 0 0 0 9px rgba(255,255,255,0), 0 2px 10px rgba(0,0,0,0.5); }
+}
+
+/* Visited stop */
 .lf-res-dot.dot-visited {
-  box-shadow: 0 0 0 3px rgba(42, 96, 223, 0.35), 0 2px 6px rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 0 3px rgba(42,96,223,0.25), 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .lf-floor {
@@ -202,24 +490,25 @@ body.solution-mode {
   border-radius: 2px;
   white-space: nowrap;
   pointer-events: none;
+  opacity: 0.85;
 }
 
 /* ============================================================
-   LEAFLET CUSTOM TOOLTIPS
+   LEAFLET TOOLTIPS
    ============================================================ */
 .lf-fire-tip,
 .lf-village-tip,
 .lf-vol-tip,
 .lf-res-tooltip {
-  background: var(--dark) !important;
-  border: 1px solid rgba(42,96,223,0.3) !important;
-  color: #fff !important;
+  background: #080f1f !important;
+  border: 1px solid rgba(42, 96, 223, 0.3) !important;
+  color: rgba(202, 230, 255, 0.9) !important;
   font-family: 'Inter', sans-serif !important;
-  font-size: 0.78rem !important;
-  line-height: 1.5 !important;
-  padding: 0.55rem 0.8rem !important;
+  font-size: 0.76rem !important;
+  line-height: 1.55 !important;
+  padding: 0.5rem 0.75rem !important;
   border-radius: 0 !important;
-  box-shadow: 0 4px 16px rgba(15,29,61,0.3) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 .lf-fire-tip::before,
@@ -227,36 +516,44 @@ body.solution-mode {
 .lf-vol-tip::before { display: none !important; }
 
 /* ============================================================
-   DATA SOURCE NOTICE (Leaflet control)
+   DATA SOURCE NOTICE
    ============================================================ */
 .lf-data-notice {
-  background: rgba(15, 29, 61, 0.82);
-  color: rgba(202, 230, 255, 0.65);
-  font-size: 0.65rem;
+  background: rgba(8, 15, 31, 0.85);
+  color: rgba(119, 182, 255, 0.4);
+  font-size: 0.6rem;
   font-family: 'Inter', sans-serif;
-  padding: 0.35rem 0.65rem;
+  padding: 0.3rem 0.6rem;
   letter-spacing: 0.02em;
   backdrop-filter: blur(4px);
 }
 
 .lf-data-notice a {
-  color: var(--blue-2);
+  color: rgba(119, 182, 255, 0.6);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.lf-data-notice a:hover { color: #fff; }
+.lf-data-notice a:hover { color: rgba(202, 230, 255, 0.9); }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .sol-header { padding: 0 1rem; }
-  .sol-title  { display: none; }
-  .sol-main   { padding: 0.75rem 1rem 0.5rem; }
+  .sol-title   { font-size: 0.66rem; }
+  .sol-loc     { display: none; }
+  .sol-main    { padding: 0.5rem 0.75rem 0.5rem; }
 
-  .sol-main .solution-body {
+  .solution-body {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: 1fr 240px;
   }
-  .priority-panel { max-height: 220px; }
+
+  .priority-panel {
+    flex-direction: row;
+    overflow: hidden;
+  }
+
+  .priority-list   { max-height: 100%; }
+  .priority-footer { display: none; }
 }
