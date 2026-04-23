@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Volunteer Routing — Athens Resilience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,263 @@
 </head>
 <body class="solution-mode">
 
+  <!-- ── ONBOARDING OVERLAY ─────────────────────────────────── -->
+  <div id="onboarding" class="ob-overlay" role="dialog" aria-modal="true" aria-label="Mission setup">
+
+    <!-- Two-step progress bar -->
+    <div class="ob-progress">
+      <div class="ob-prog-fill" id="ob-prog-fill"></div>
+    </div>
+
+    <!-- ── STEP 1 · Disaster type ── -->
+    <div class="ob-step" id="ob-step-1">
+      <div class="ob-brand">
+        <span class="ob-brand-name">Athens Resilience</span>
+        <span class="ob-brand-sub">Volunteer Support Mode</span>
+      </div>
+
+      <div class="ob-content">
+        <h1 class="ob-heading">What emergency<br>are you responding to?</h1>
+        <p class="ob-desc">Select the active scenario to load resident profiles and field protocols.</p>
+      </div>
+
+      <div class="ob-disaster-list">
+
+        <button class="dc" data-type="wildfire">
+          <div class="dc-icon dc-wildfire">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2c0 6-7 9-7 15a7 7 0 0014 0c0-6-7-9-7-15z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.14"/>
+              <path d="M12 22c-2.2 0-4-1.8-4-4 0-3 2-4.5 4-6 0 2 1.5 3 2 4.5.4-1.5 0-3-.5-4.5C16.5 13.5 16 16 16 18c0 2.2-1.8 4-4 4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.18"/>
+            </svg>
+          </div>
+          <div class="dc-body">
+            <div class="dc-name">Wildfire</div>
+            <div class="dc-note">Active data · Evros, August 2023</div>
+          </div>
+          <div class="dc-check" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="dc" data-type="flood">
+          <div class="dc-icon dc-flood">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 10c1.5-3 4.5 3 7.5 0s6-3 7.5 0M3 15c1.5-3 4.5 3 7.5 0s6-3 7.5 0M3 5c1.5-3 4.5 3 7.5 0s6-3 7.5 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="dc-body">
+            <div class="dc-name">Flooding</div>
+            <div class="dc-note">Medicane Ianos · Kefalonia, September 2020</div>
+          </div>
+          <div class="dc-check" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="dc" data-type="storm">
+          <div class="dc-icon dc-storm">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M19 16.9A5 5 0 0018 7h-1.26A8 8 0 104 15.25M13 17l-3 5M9 17l-3 5M17 17l-3 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="dc-body">
+            <div class="dc-name">Storm</div>
+            <div class="dc-note">Storm Daniel · Thessaly, September 2023</div>
+          </div>
+          <div class="dc-check" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+      </div>
+
+      <button class="ob-cta" id="ob-next-1" disabled>
+        Continue
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── STEP 2 · Volunteer profile ── -->
+    <div class="ob-step" id="ob-step-2" hidden>
+
+      <button class="ob-back-btn" id="ob-back-btn-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back
+      </button>
+
+      <div class="ob-content">
+        <span class="ob-step-label">Step 2 of 3 — Profile</span>
+        <h1 class="ob-heading">Your volunteer profile</h1>
+        <p class="ob-desc">Tell us who you are so we can personalise your mission briefing.</p>
+      </div>
+
+      <div class="ob-profile-form">
+        <div class="ob-field">
+          <label class="ob-label" for="ob-name">Your name</label>
+          <input class="ob-input" id="ob-name" type="text" placeholder="e.g. Maria Papadopoulos" autocomplete="given-name" maxlength="48"/>
+        </div>
+        <div class="ob-field">
+          <span class="ob-label">Your role</span>
+          <div class="ob-roles">
+            <button class="ob-role" data-role="volunteer">Community Volunteer</button>
+            <button class="ob-role" data-role="medical">Medical Support</button>
+            <button class="ob-role" data-role="responder">First Responder</button>
+            <button class="ob-role" data-role="civil">Civil Protection</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="ob-cta" id="ob-next-2" disabled>
+        Continue
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── STEP 3 · Strengths ── -->
+    <div class="ob-step" id="ob-step-3" hidden>
+
+      <button class="ob-back-btn" id="ob-back-btn-3">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back
+      </button>
+
+      <div class="ob-content">
+        <span class="ob-step-label">Step 3 of 3 — Skills</span>
+        <h1 class="ob-heading">What are your strengths?</h1>
+        <p class="ob-desc">Select all that apply — we'll adjust the visit queue to prioritise residents who need your specific skills.</p>
+      </div>
+
+      <div class="ob-skills-grid">
+        <button class="sk" data-skill="physical">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 3a3 3 0 00-3 3v12a3 3 0 006 0V6a3 3 0 00-3-3zM6 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3zM6 19a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Physical Support
+        </button>
+        <button class="sk" data-skill="medical">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          First Aid / Medical
+        </button>
+        <button class="sk" data-skill="transport">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="7" cy="17" r="2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17" cy="17" r="2" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          Has Vehicle
+        </button>
+        <button class="sk" data-skill="elderly">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="6" r="3" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M6 21v-2a6 6 0 016-6h0a6 6 0 016 6v2M12 13v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Elderly Care
+        </button>
+        <button class="sk" data-skill="disability">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M9 11l3-2 3 2M9 15a5 5 0 106.5 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Disability Support
+        </button>
+        <button class="sk" data-skill="language">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 5h7M9 3v2M5 9c0 2.8 2.2 5 5 5m0 0l3 3m-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 19l4-9 4 9M14.6 16.5h4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Speaks Greek
+        </button>
+        <button class="sk" data-skill="rescue">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M21 21l-3.5-3.5M11 8v3l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Search & Rescue
+        </button>
+        <button class="sk" data-skill="comms">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zM9.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5z" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6 14h12M12 14v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Communication
+        </button>
+      </div>
+
+      <button class="ob-cta" id="ob-start">
+        Get Mission Brief
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── STEP 4 · Mission Brief ── -->
+    <div class="ob-step ob-brief-step" id="ob-step-4" hidden>
+
+      <div class="ob-content">
+        <span class="ob-step-label">Mission Brief</span>
+        <h1 class="ob-heading">Your assignment</h1>
+        <p class="ob-desc">Based on your skills and location, the team has been divided. Here is your briefing.</p>
+      </div>
+
+      <!-- AI-generated brief insights -->
+      <div class="ob-brief-body" id="ob-brief-body">
+        <div class="ob-brief-loading" id="ob-brief-loading">
+          <div class="ob-brief-spinner"></div>
+          <span>Generating mission brief…</span>
+        </div>
+        <div class="ob-insights" id="ob-insights" hidden>
+          <div class="ob-insight">
+            <span class="ob-insight-label">Priority</span>
+            <p class="ob-insight-text" id="ob-ins-priority"></p>
+          </div>
+          <div class="ob-insight">
+            <span class="ob-insight-label">First Stop</span>
+            <p class="ob-insight-text ob-insight-name" id="ob-ins-start"></p>
+          </div>
+          <div class="ob-insight">
+            <span class="ob-insight-label">Prepare</span>
+            <p class="ob-insight-text" id="ob-ins-prepare"></p>
+          </div>
+          <div class="ob-insight">
+            <span class="ob-insight-label">Why Your Route</span>
+            <p class="ob-insight-text" id="ob-ins-split"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resident assignment roster -->
+      <div class="ob-roster">
+        <div class="ob-roster-section">
+          <span class="ob-section-label">Your Stops</span>
+          <div class="ob-assigned" id="ob-assigned"></div>
+        </div>
+        <div class="ob-roster-section" id="ob-other-section" hidden>
+          <span class="ob-section-label ob-section-label-other">Covered by Team</span>
+          <div class="ob-other-assigned" id="ob-other-assigned"></div>
+        </div>
+      </div>
+
+      <button class="ob-cta" id="ob-begin" disabled>
+        Begin Route
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div><!-- /.ob-overlay -->
+
   <div id="tooltip" aria-hidden="true"></div>
 
   <!-- Header -->
@@ -22,36 +279,186 @@
         <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5"
               stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Back
+      <span class="sol-back-label">Back</span>
     </a>
     <div class="sol-header-center">
-      <span class="sol-title">Volunteer Priority Routing</span>
-      <span class="sol-loc">Evros Region &mdash; August 2023</span>
+      <span class="sol-title">Volunteer Routing</span>
+      <span class="sol-loc">Evros &mdash; August 2023</span>
     </div>
     <span class="sol-badge">Support Mode</span>
   </header>
 
-  <!-- Tool -->
+  <!-- Main: map + overlay sheet -->
   <main class="sol-main">
-    <div class="solution-body">
 
-      <!-- Map -->
-      <div class="map-panel">
-        <div id="routing-map"></div>
+    <!-- Map fills all available space -->
+    <div class="map-panel" id="map-panel">
+      <div id="routing-map"></div>
+
+      <!-- Layer toggles — top-left of map -->
+      <div class="map-layers" id="map-layers">
+        <span class="map-layers-label">Layers</span>
+        <button class="layer-btn active" id="layer-fire" title="Copernicus EMSN166 official fire boundary">
+          <span class="layer-swatch" style="background:rgba(229,90,0,0.55)"></span>
+          Fire Zone
+        </button>
+        <button class="layer-btn active" id="layer-effis" title="EFFIS live burned area — EU satellite data">
+          <span class="layer-swatch" style="background:rgba(180,40,40,0.55)"></span>
+          EFFIS Burned Area
+        </button>
       </div>
 
-      <!-- Queue panel -->
-      <aside class="priority-panel">
+      <!-- ── FLOATING ACTION CARD ─────────────────────────── -->
+      <div class="map-card" id="map-card">
 
-        <div class="priority-header">
-          <div class="priority-header-row">
-            <span class="priority-title">Visit Queue</span>
-            <span class="route-status" id="route-status" data-state="ready">READY</span>
-          </div>
-          <p class="priority-meta">8 residents &mdash; staging: Feres (E90)</p>
+        <!-- State: idle — prompt to calculate -->
+        <div class="mc-state" id="mc-idle">
+          <p class="mc-hint">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            8 residents &middot; staging: Feres (E90)
+          </p>
+          <button id="btn-route" class="btn-route">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 12h18M14 5l7 7-7 7" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Calculate Route
+          </button>
         </div>
 
-        <button id="btn-route" class="btn-route">
+        <!-- State: preview — tapped resident's direct road path -->
+        <div class="mc-state" id="mc-preview" hidden>
+          <div class="mc-top-row">
+            <div class="mc-next-label" id="mc-preview-label">ROUTE PREVIEW</div>
+            <button class="mc-back-btn" id="mc-back-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+              Back
+            </button>
+          </div>
+          <div class="mc-stop-name" id="mc-preview-name">—</div>
+          <div class="mc-preview-dist" id="mc-preview-dist">
+            <span id="mc-preview-km">—</span>
+            <span class="mc-preview-unit"> km via road</span>
+          </div>
+          <div class="mc-stop-meta" id="mc-preview-meta">—</div>
+          <div class="mc-actions">
+            <button class="mc-btn mc-safe" id="mc-preview-safe">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Safe
+            </button>
+            <button class="mc-btn mc-flag" id="mc-preview-flag">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Needs Help
+            </button>
+          </div>
+        </div>
+
+        <!-- State: active stop — shown after route is ready -->
+        <div class="mc-state" id="mc-active" hidden>
+          <div class="mc-top-row">
+            <div class="mc-next-label">NEXT STOP</div>
+            <div class="mc-progress-pill" id="mc-progress">0 / 8</div>
+          </div>
+          <div class="mc-stop-name" id="mc-stop-name">—</div>
+          <div class="mc-stop-meta" id="mc-stop-meta">—</div>
+          <div class="mc-actions">
+            <button class="mc-btn mc-safe" id="mc-safe-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Safe
+            </button>
+            <button class="mc-btn mc-flag" id="mc-flag-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Needs Help
+            </button>
+          </div>
+          <button class="mc-queue-btn" id="mc-queue-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            View all stops
+            <span class="mc-remaining" id="mc-remaining">8</span>
+          </button>
+        </div>
+
+        <!-- State: all visited -->
+        <div class="mc-state" id="mc-done" hidden>
+          <div class="mc-done-top">
+            <div class="mc-done-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="mc-done-text">Mission complete</div>
+              <div class="mc-done-sub" id="mc-done-sub">All residents accounted for</div>
+            </div>
+          </div>
+
+          <!-- Evacuation route -->
+          <div class="mc-evac-section">
+            <div class="mc-evac-label">EXIT ROUTE</div>
+            <div class="mc-evac-exits" id="mc-evac-exits">
+              <!-- populated by JS -->
+            </div>
+          </div>
+
+          <div class="mc-evac-status" id="mc-evac-status" hidden>
+            <span id="mc-evac-dest">—</span>
+            <span class="mc-evac-km"><span id="mc-evac-km">—</span> km via road</span>
+          </div>
+
+          <button id="btn-reset" class="btn-reset-main">New Mission</button>
+        </div>
+
+      </div><!-- /.map-card -->
+    </div><!-- /.map-panel -->
+
+    <!-- ── QUEUE SHEET ──────────────────────────────────────
+         Mobile:  slides up as an overlay
+         Tablet+: permanent right sidebar                    -->
+    <aside class="queue-sheet" id="queue-sheet" aria-hidden="true">
+      <div class="qs-backdrop" id="qs-backdrop"></div>
+
+      <div class="qs-panel" id="qs-panel">
+        <!-- Drag handle (mobile only) -->
+        <div class="qs-handle-wrap" id="qs-handle-wrap">
+          <div class="qs-handle"></div>
+        </div>
+
+        <!-- Panel header -->
+        <div class="qs-header">
+          <div class="qs-header-row">
+            <span class="priority-title">Visit Queue</span>
+            <span class="route-status" id="route-status" data-state="ready">READY</span>
+            <button class="qs-close" id="qs-close" aria-label="Close queue">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <p class="priority-meta">8 residents &middot; staging: Feres (E90)</p>
+        </div>
+
+        <!-- Calculate button (tablet sidebar — mobile uses map card) -->
+        <button id="btn-route-sheet" class="btn-route btn-route-sheet" hidden>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M3 12h18M14 5l7 7-7 7" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round" stroke-linejoin="round"/>
@@ -59,9 +466,28 @@
           Calculate Route
         </button>
 
+        <!-- Route summary stats -->
+        <div class="route-summary" id="route-summary" hidden>
+          <div class="rs-stat">
+            <span class="rs-value" id="rs-dist">—</span>
+            <span class="rs-label">km total</span>
+          </div>
+          <div class="rs-divider"></div>
+          <div class="rs-stat">
+            <span class="rs-value" id="rs-progress">0 / 8</span>
+            <span class="rs-label">visited</span>
+          </div>
+          <div class="rs-divider"></div>
+          <div class="rs-stat">
+            <span class="rs-value" id="rs-flagged">0</span>
+            <span class="rs-label">need help</span>
+          </div>
+        </div>
+
+        <!-- Scrollable queue -->
         <div id="priority-list" class="priority-list">
           <div class="priority-empty">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6-3V7m6 16l4.553-2.276A1 1 0 0021 19.382V8.618a1 1 0 00-.553-.894L15 5m0 15V5m0 0L9 7"
                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -69,21 +495,43 @@
           </div>
         </div>
 
-        <div class="priority-footer">
+        <!-- Evacuation routes — revealed when all stops are done -->
+        <div class="qs-evac" id="qs-evac" hidden>
+          <div class="qs-evac-header">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6-3V7m6 16l4.553-2.276A1 1 0 0021 19.382V8.618a1 1 0 00-.553-.894L15 5m0 15V5m0 0L9 7"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            EXIT ROUTES
+          </div>
+          <div id="qs-evac-exits"></div>
+          <div class="qs-evac-status" id="qs-evac-status" hidden>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Routing to <span id="qs-evac-dest">—</span>
+            &nbsp;&middot;&nbsp; <span id="qs-evac-km">—</span> km
+          </div>
+        </div>
+
+        <!-- Footer: legend + reset -->
+        <div class="qs-footer">
           <div class="priority-legend">
             <div class="pl-item"><span class="pl-dot" style="background:#e8aa30"></span>Elderly</div>
             <div class="pl-item"><span class="pl-dot" style="background:#77b6ff"></span>Disabled</div>
             <div class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>Both</div>
             <div class="pl-item"><span class="pl-dot" style="background:#22c55e"></span>Volunteer</div>
           </div>
-          <button id="btn-reset" class="btn-reset">Reset</button>
+          <button id="btn-reset-sheet" class="btn-reset">Reset</button>
         </div>
+      </div>
+    </aside>
 
-      </aside>
-    </div>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Copernicus EMSN166 official fire delineation (92,321 ha · 112 patches) -->
+  <script src="fire_perimeter.js"></script>
   <script src="solution.js"></script>
 </body>
 </html>
