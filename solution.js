@@ -1508,6 +1508,8 @@ function initOnboarding() {
           </div>
         </div>`;
       }).join('');
+      const stopsLabel = document.getElementById('ob-stops-label');
+      if (stopsLabel) stopsLabel.textContent = `Your Stops (${MY_RESIDENTS.length})`;
     }
 
     /* COVERED BY TEAM section */

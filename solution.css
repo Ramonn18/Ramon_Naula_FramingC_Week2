@@ -1762,8 +1762,8 @@ body.solution-mode {
 
 /* ── Mission brief insight chips ── */
 .ob-insights {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0.45rem;
 }
 
