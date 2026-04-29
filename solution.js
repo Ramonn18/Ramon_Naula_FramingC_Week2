@@ -1538,8 +1538,9 @@ function initOnboarding() {
     /* Render insight chips */
     const insightsEl = document.getElementById('ob-insights');
     if (insightsEl) {
+      const routedFirst = computeRoute(MY_RESIDENTS, ACTIVE_VOLUNTEER_START)[0];
       document.getElementById('ob-ins-priority').textContent = brief.priority;
-      document.getElementById('ob-ins-start').textContent    = brief.start;
+      document.getElementById('ob-ins-start').textContent    = routedFirst?.name || brief.start;
       document.getElementById('ob-ins-prepare').textContent  = brief.prepare;
       document.getElementById('ob-ins-split').textContent    = brief.why_split;
       insightsEl.removeAttribute('hidden');
